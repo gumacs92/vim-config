@@ -1,7 +1,13 @@
+
+
+-- Configuring the rmagatti/auto-session
 require('auto-session').setup({
 	auto_session_enabled = true,
 	auto_session_enable_last_session = true
 })
+
+
+-- Configuring Telescope plugin
 require('telescope').setup {
 	extensions = {
 		project = {
@@ -14,9 +20,12 @@ require('telescope').setup {
 		}
 	}
 }
+-- Loading Telescope extensions
 require'telescope'.load_extension('project')
 require("telescope").load_extension "file_browser"
 require("telescope").load_extension("session-lens")
+
+-- Setting up Keybindings for lua configured plugins
 vim.api.nvim_set_keymap(
   "n",
   "<leader>e",
@@ -41,5 +50,10 @@ vim.api.nvim_set_keymap(
 	":Telescope find_files<CR>",
 	{noremap = true, silent = true}
 )
+
+
+-- Configuring mason
+require("mason").setup()
+require("mason-lspconfig").setup()
 
 print "Sourced init.lua"

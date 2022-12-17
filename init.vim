@@ -15,6 +15,9 @@ call plug#begin('~/.config/nvim/plugged')
 	Plug 'nvim-tree/nvim-web-devicons'
 	Plug 'rmagatti/auto-session'
 	Plug 'rmagatti/session-lens'
+	Plug 'williamboman/mason.nvim'
+	Plug 'williamboman/mason-lspconfig.nvim'
+	Plug 'neovim/nvim-lspconfig'
 call plug#end()
 
 let path = expand('<sfile>:p:h')

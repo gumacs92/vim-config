@@ -27,7 +27,7 @@ else
 	nnoremap <c-h> <c-w>h
 	nnoremap <c-l> <c-w>l
 
-	nnoremap <silent> <C-Space> :call fzf#run(fzf#wrap({'source': 'find $HOME/dev -maxdepth 2 -type d', 'sink': 'e'}))<CR>
+	" nnoremap <silent> <C-Space> :call fzf#run(fzf#wrap({'source': 'find $HOME/dev -maxdepth 2 -type d', 'sink': 'e'}))<CR>
 
 	nnoremap <leader>ff <cmd>Telescope find_files<cr>
 	nnoremap <leader>fg <cmd>Telescope live_grep<cr>
