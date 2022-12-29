@@ -18,6 +18,11 @@ call plug#begin('~/.config/nvim/plugged')
 	Plug 'williamboman/mason.nvim'
 	Plug 'williamboman/mason-lspconfig.nvim'
 	Plug 'neovim/nvim-lspconfig'
+	Plug 'neovim/nvim-lspconfig' "  Collection of configurations for built-in LSP client
+	Plug 'hrsh7th/nvim-cmp' "  Autocompletion plugin
+	Plug 'hrsh7th/cmp-nvim-lsp' "  LSP source for nvim-cmp
+	Plug 'saadparwaiz1/cmp_luasnip' "  Snippets source for nvim-cmp
+	Plug 'L3MON4D3/LuaSnip' "  Snippets plugin
 call plug#end()
 
 let path = expand('<sfile>:p:h')
@@ -39,6 +44,9 @@ set showmatch
 if exists('g:vscode')
     " VSCode extension
 else
+	" filetype plugin on
+	" set omnifunc=syntaxcomplete#Complete
+
 	set relativenumber
 	set number
 	" set syntax=on

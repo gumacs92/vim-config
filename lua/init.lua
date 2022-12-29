@@ -1,5 +1,3 @@
-
-
 -- Configuring the rmagatti/auto-session
 require('auto-session').setup({
 	auto_session_enabled = true,
@@ -51,9 +49,5 @@ vim.api.nvim_set_keymap(
 	{noremap = true, silent = true}
 )
 
-
--- Configuring mason
-require("mason").setup()
-require("mason-lspconfig").setup()
-
+require('autocomplete')
 print "Sourced init.lua"
