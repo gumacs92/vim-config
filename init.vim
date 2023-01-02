@@ -1,11 +1,23 @@
 echo 'Created init.vim successfully!'
 
-" - For Neovim: stdpath('data') . '/plugged'
-" - Avoid using standard Vim directory names like 'plugin'
-call plug#begin('~/.config/nvim/plugged')
+let path = expand('<sfile>:p:h')
+exec 'source' path . '/vim/mappings.vim' 
+
+set incsearch
+set ignorecase
+set hlsearch
+set showmatch
+
+if exists('g:vscode')
+    " VSCode extension
+	call plug#begin('~/.config/nvim/plugged')
 	Plug 'tpope/vim-surround'
 	Plug 'tpope/vim-commentary'
-	" Plug 'williamboman/mason.nvim'
+	call plug#end()
+else
+	call plug#begin('~/.config/nvim/plugged')
+	Plug 'tpope/vim-surround'
+	Plug 'tpope/vim-commentary'
 	Plug 'moll/vim-bbye'
 	Plug 'nvim-lua/plenary.nvim'
 	Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
@@ -13,6 +25,7 @@ call plug#begin('~/.config/nvim/plugged')
 	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 	Plug 'nvim-telescope/telescope-file-browser.nvim'
 	Plug 'nvim-tree/nvim-web-devicons'
+	Plug 'nvim-lualine/lualine.nvim'
 	Plug 'rmagatti/auto-session'
 	Plug 'rmagatti/session-lens'
 	Plug 'williamboman/mason.nvim'
@@ -23,27 +36,9 @@ call plug#begin('~/.config/nvim/plugged')
 	Plug 'hrsh7th/cmp-nvim-lsp' "  LSP source for nvim-cmp
 	Plug 'saadparwaiz1/cmp_luasnip' "  Snippets source for nvim-cmp
 	Plug 'L3MON4D3/LuaSnip' "  Snippets plugin
-call plug#end()
+	call plug#end()
 
-let path = expand('<sfile>:p:h')
-exec 'source' path . '/vim/mappings.vim' 
-
-lua require('init')
-
-" augroup filetype_vim
-"     autocmd!
-"     autocmd FileType vim setlocal foldmethod=marker
-" augroup END
-
-" set clipboard+=unnamedplus
-set incsearch
-set ignorecase
-set hlsearch
-set showmatch
-
-if exists('g:vscode')
-    " VSCode extension
-else
+	lua require('init')
 	" filetype plugin on
 	" set omnifunc=syntaxcomplete#Complete
 
@@ -58,7 +53,7 @@ else
 	command! -bang -nargs=? -complete=dir Files
 				\ call fzf#vim#files(<q-args>, {'options': ['--layout=reverse', '--info=inline', '--preview', '~/.config/nvim/plugged/fzf.vim/bin/preview.sh {}']}, <bang>0)
 
-	
+
 	" hi CursorLine   cterm=NONE ctermbg=gray ctermfg=white guibg=gray guifg=white
 	" set cursorline
 	" hi CursorColumn cterm=NONE ctermbg=gray ctermfg=white guibg=gray guifg=white
