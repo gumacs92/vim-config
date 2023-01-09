@@ -1,8 +1,38 @@
 
+local telescope = require"telescope"
+local trouble = require"trouble"
+local lualine = require'lualine'
+local autosession = require'auto-session' -- saveing session automatically during folder change
+local lsp_lines =  require"lsp_lines" -- diagnostic text lines are much more prettier
+local pqf = require"pqf" -- prettier quickfix list
+
+-- Vim quickfix reflector config
+vim.g.qf_modifiable = 1
+vim.g.qf_join_changes = 1
+vim.g.qf_write_changes = 1
+
+-- Prettier quick fix list setup
+pqf.setup()
+
+-- Diagnostic lines setup and config
+lsp_lines.setup()
+
+vim.diagnostic.config({
+	virtual_text = false,
+	virtual_lines = true
+})
+
+
 -- Configuring Telescope plugin
-require('telescope').setup {
+telescope.setup {
+	defaults = {
+		mappings = {
+			i = { ["<C-t>"] = trouble.open_with_trouble },
+			n = { ["<C-t>"] = trouble.open_with_trouble },
+		},
+	},
 	extensions = {
-		project = {
+	project = {
 			base_dirs = {
 				'~/dev',
 			},
@@ -12,10 +42,11 @@ require('telescope').setup {
 		}
 	}
 }
+
 -- Loading Telescope extensions
-require'telescope'.load_extension('project')
-require("telescope").load_extension "file_browser"
-require("telescope").load_extension("session-lens")
+telescope.load_extension('project')
+telescope.load_extension "file_browser"
+telescope.load_extension("session-lens")
 
 -- Setting up Keybindings for lua configured plugins
 vim.api.nvim_set_keymap(
@@ -42,11 +73,16 @@ vim.api.nvim_set_keymap(
 	":Telescope find_files<CR>",
 	{noremap = true, silent = true}
 )
+vim.api.nvim_set_keymap(
+	'n',
+	'<leader>ff',
+	":Telescope live_grep<CR>",
+	{noremap = true, silent = true}
+)
 
 require('autocomplete')
 
 
-local lualine = require('lualine')
 lualine.setup {
 	sections = {
 		lualine_c = {
@@ -54,7 +90,6 @@ lualine.setup {
 		}
 	}
 }
-local autosession = require'auto-session'
 autosession.setup {
 	-- auto_session_enable_last_session = true,
 	-- log_level = 'debug',
@@ -64,11 +99,11 @@ autosession.setup {
 	cwd_change_handling = {
 		restore_upcoming_session = true,
 		post_cwd_changed_hook = function ()
-				print('hello session change')
 				lualine.refresh()
 		end
 	}
 }
+
 vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 -- Configuring the rmagatti/auto-session
 -- require('auto-session').setup({

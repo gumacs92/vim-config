@@ -1,6 +1,6 @@
 let map = "\\"
 
-nnoremap <leader><leader><CR> :source $MYVIMRC<CR> | :echom 'Sourced vim.rc'
+nnoremap <leader><leader><CR> :source %<CR> | :echom 'Sourced file'
 nnoremap <leader>v<CR> :e $MYVIMRC<CR>
 nnoremap <leader>q :Bdelete<CR>
 nnoremap <leader>qa :bufdo :Bdelete<CR>
@@ -36,6 +36,14 @@ else
 
 	" nnoremap <silent> <C-p> :Files<CR> 
 	" nnoremap <silent> <C-f> :Ag<Cr>	
+	
+	" Vim Script
+	nnoremap <leader>xx <cmd>TroubleToggle<cr>
+	nnoremap <leader>xw <cmd>TroubleToggle workspace_diagnostics<cr>
+	nnoremap <leader>xd <cmd>TroubleToggle document_diagnostics<cr>
+	nnoremap <leader>xq <cmd>TroubleToggle quickfix<cr>
+	nnoremap <leader>xl <cmd>TroubleToggle loclist<cr>
+	nnoremap gR <cmd>TroubleToggle lsp_references<cr>
 endif
 
 echom "Sourced vim/mappings.vim"

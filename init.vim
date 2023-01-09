@@ -36,12 +36,19 @@ else
 	Plug 'hrsh7th/cmp-nvim-lsp' "  LSP source for nvim-cmp
 	Plug 'saadparwaiz1/cmp_luasnip' "  Snippets source for nvim-cmp
 	Plug 'L3MON4D3/LuaSnip' "  Snippets plugin
+	" Plug 'kyazdani42/nvim-web-devicons'
+	Plug 'folke/trouble.nvim'
+	Plug 'https://git.sr.ht/~whynothugo/lsp_lines.nvim' 
+	Plug 'https://gitlab.com/yorickpeterse/nvim-pqf'
+	Plug 'https://github.com/stefandtw/quickfix-reflector.vim'
+	Plug 'tpope/vim-abolish'
 	call plug#end()
 
 	lua require('init')
 	" filetype plugin on
 	" set omnifunc=syntaxcomplete#Complete
 
+	set signcolumn=number
 	set relativenumber
 	set number
 	" set syntax=on
@@ -51,7 +58,7 @@ else
 	set encoding=UTF-8
 
 	command! -bang -nargs=? -complete=dir Files
-				\ call fzf#vim#files(<q-args>, {'options': ['--layout=reverse', '--info=inline', '--preview', '~/.config/nvim/plugged/fzf.vim/bin/preview.sh {}']}, <bang>0)
+				\ call fzf#vim#files(<q-args>, {'oions': ['--layout=reverse', '--info=inline', '--preview', '~/.config/nvim/plugged/fzf.vim/bin/preview.sh {}']}, <bang>0)
 
 
 	" hi CursorLine   cterm=NONE ctermbg=gray ctermfg=white guibg=gray guifg=white
