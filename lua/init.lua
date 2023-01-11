@@ -6,6 +6,7 @@ local autosession = require'auto-session' -- saveing session automatically durin
 local lsp_lines =  require"lsp_lines" -- diagnostic text lines are much more prettier
 local pqf = require"pqf" -- prettier quickfix list
 
+
 -- Vim quickfix reflector config
 vim.g.qf_modifiable = 1
 vim.g.qf_join_changes = 1

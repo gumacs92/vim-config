@@ -1,8 +1,54 @@
--- Configuring mason
-require("mason").setup()
-require("mason-lspconfig").setup {
-	ensure_installed = { 'vimls', "sumneko_lua", 'tsserver' }
+
+
+local treesitter = require"nvim-treesitter.configs"
+local mason = require"mason"
+local masonLspConfig = require"mason-lspconfig"
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+local lspconfig = require('lspconfig')
+local luasnip = require 'luasnip'
+local cmp = require 'cmp'
+
+local languageConfigs = {
+	typescript = {
+		lsp = "tsserver"
+	},
+	vim = {
+		lsp = "vimls"
+	},
+	lua = {
+		lsp = "sumneko_lua"
+	}
 }
+
+local treesitterConfigEnsureInstalled = {}
+local lspConfigEnsureInstalled = {}
+for lang, config in pairs(languageConfigs) do
+	table.insert(lspConfigEnsureInstalled, config.lsp)
+	table.insert(treesitterConfigEnsureInstalled, lang)
+end
+
+
+-- Configuring mason
+mason.setup()
+masonLspConfig.setup {
+	ensure_installed = lspConfigEnsureInstalled
+}
+
+-- treesitter config
+treesitter.setup {
+	ensure_installed = treesitterConfigEnsureInstalled,
+	highlight = {
+		enable = true
+	},
+	indent = {
+		enable = true
+	},
+	incremental_selection = {
+		enable = true
+	}
+}
+
+
 
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -45,15 +91,8 @@ local lsp_flags = {
 
 
 -- Add additional capabilities supported by nvim-cmp
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-local lspconfig = require('lspconfig')
-
--- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-local servers = { 'vimls', 'sumneko_lua', 'tsserver' }
-
-for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {
+for _, config in ipairs(languageConfigs) do
+  lspconfig[config.lsp].setup {
     -- on_attach = my_custom_on_attach,
 	flags = lsp_flags,
 	on_attach = on_attach,
@@ -62,7 +101,6 @@ for _, lsp in ipairs(servers) do
 end
 
 -- luasnip setup
-local luasnip = require 'luasnip'
 
 local has_words_before = function()
   unpack = unpack or table.unpack
@@ -72,7 +110,6 @@ end
 
 
 -- nvim-cmp setup
-local cmp = require 'cmp'
 cmp.setup {
   snippet = {
     expand = function(args)

@@ -13,6 +13,7 @@ if exists('g:vscode')
 	call plug#begin('~/.config/nvim/plugged')
 	Plug 'tpope/vim-surround'
 	Plug 'tpope/vim-commentary'
+	Plug 'tpope/vim-abolish'
 	call plug#end()
 else
 	call plug#begin('~/.config/nvim/plugged')
@@ -42,11 +43,10 @@ else
 	Plug 'https://gitlab.com/yorickpeterse/nvim-pqf'
 	Plug 'https://github.com/stefandtw/quickfix-reflector.vim'
 	Plug 'tpope/vim-abolish'
+	Plug 'sainnhe/everforest'
 	call plug#end()
 
 	lua require('init')
-	" filetype plugin on
-	" set omnifunc=syntaxcomplete#Complete
 
 	set signcolumn=number
 	set relativenumber
@@ -56,6 +56,13 @@ else
 	set tabstop=4 | " Set tab width to 4 columns
 	set mouse=a
 	set encoding=UTF-8
+
+	set foldmethod=expr
+	set foldexpr=nvim_treesitter#foldexpr()
+	" set nofoldenable
+
+	set background=dark
+	colorscheme everforest
 
 	command! -bang -nargs=? -complete=dir Files
 				\ call fzf#vim#files(<q-args>, {'oions': ['--layout=reverse', '--info=inline', '--preview', '~/.config/nvim/plugged/fzf.vim/bin/preview.sh {}']}, <bang>0)
