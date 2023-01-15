@@ -48,8 +48,6 @@ treesitter.setup {
 	}
 }
 
-
-
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap=true, silent=true }
@@ -89,15 +87,14 @@ local lsp_flags = {
   debounce_text_changes = 150,
 }
 
-
 -- Add additional capabilities supported by nvim-cmp
-for _, config in ipairs(languageConfigs) do
-  lspconfig[config.lsp].setup {
-    -- on_attach = my_custom_on_attach,
-	flags = lsp_flags,
-	on_attach = on_attach,
-    capabilities = capabilities,
-  }
+for _, config in pairs(languageConfigs) do
+	lspconfig[config.lsp].setup {
+		-- on_attach = my_custom_on_attach,
+		flags = lsp_flags,
+		on_attach = on_attach,
+		capabilities = capabilities,
+	}
 end
 
 -- luasnip setup
@@ -108,6 +105,7 @@ local has_words_before = function()
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
+vim.api.nvim_set_keymap("i", "<Tab>", 'copilot#Accept("<Tab>")', { silent = true, expr = true, noremap = true })
 
 -- nvim-cmp setup
 cmp.setup {
@@ -132,7 +130,7 @@ cmp.setup {
       elseif has_words_before() then
         cmp.complete()
       else
-        fallback()
+		fallback()
       end
     end, { 'i', 's' }),
     ['<S-Tab>'] = cmp.mapping(function(fallback)

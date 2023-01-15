@@ -37,17 +37,19 @@ else
 	Plug 'hrsh7th/cmp-nvim-lsp' "  LSP source for nvim-cmp
 	Plug 'saadparwaiz1/cmp_luasnip' "  Snippets source for nvim-cmp
 	Plug 'L3MON4D3/LuaSnip' "  Snippets plugin
-	" Plug 'kyazdani42/nvim-web-devicons'
 	Plug 'folke/trouble.nvim'
 	Plug 'https://git.sr.ht/~whynothugo/lsp_lines.nvim' 
 	Plug 'https://gitlab.com/yorickpeterse/nvim-pqf'
 	Plug 'https://github.com/stefandtw/quickfix-reflector.vim'
 	Plug 'tpope/vim-abolish'
 	Plug 'sainnhe/everforest'
+	Plug 'github/copilot.vim'
 	call plug#end()
 
 	lua require('init')
 
+	set splitbelow
+	set splitright
 	set signcolumn=number
 	set relativenumber
 	set number
@@ -57,12 +59,14 @@ else
 	set mouse=a
 	set encoding=UTF-8
 
-	set foldmethod=expr
-	set foldexpr=nvim_treesitter#foldexpr()
+	" set foldmethod=expr
+	" set foldexpr=nvim_treesitter#foldexpr()
 	" set nofoldenable
 
 	set background=dark
 	colorscheme everforest
+
+	" let g:copilot_no_tab_map = v:true
 
 	command! -bang -nargs=? -complete=dir Files
 				\ call fzf#vim#files(<q-args>, {'oions': ['--layout=reverse', '--info=inline', '--preview', '~/.config/nvim/plugged/fzf.vim/bin/preview.sh {}']}, <bang>0)
