@@ -42,8 +42,10 @@ else
 	Plug 'https://gitlab.com/yorickpeterse/nvim-pqf'
 	Plug 'https://github.com/stefandtw/quickfix-reflector.vim'
 	Plug 'tpope/vim-abolish'
-	Plug 'sainnhe/everforest'
+	" Plug 'sainnhe/everforest'
+	Plug 'altercation/vim-colors-solarized'	
 	Plug 'github/copilot.vim'
+	Plug 'aserowy/tmux.nvim'
 	call plug#end()
 
 	lua require('init')
@@ -64,7 +66,12 @@ else
 	" set nofoldenable
 
 	set background=dark
-	colorscheme everforest
+	colorscheme solarized
+	" hi ActiveWindow guibg=#21242b
+	" hi InactiveWindow guibg=#282C34
+	" set winhighlight=Normal:ActiveWindow,NormalNC:InactiveWindow
+
+
 
 	" let g:copilot_no_tab_map = v:true
 

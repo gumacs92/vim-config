@@ -5,7 +5,9 @@ local lualine = require'lualine'
 local autosession = require'auto-session' -- saveing session automatically during folder change
 local lsp_lines =  require"lsp_lines" -- diagnostic text lines are much more prettier
 local pqf = require"pqf" -- prettier quickfix list
+local tmux = require"tmux"
 
+tmux.setup()
 
 -- Vim quickfix reflector config
 vim.g.qf_modifiable = 1
@@ -22,7 +24,6 @@ vim.diagnostic.config({
 	virtual_text = false,
 	virtual_lines = true
 })
-
 
 -- Configuring Telescope plugin
 telescope.setup {
@@ -82,7 +83,6 @@ vim.api.nvim_set_keymap(
 )
 
 require('autocomplete')
-
 
 lualine.setup {
 	sections = {
