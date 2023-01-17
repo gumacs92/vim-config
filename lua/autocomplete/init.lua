@@ -10,20 +10,32 @@ local cmp = require 'cmp'
 
 local languageConfigs = {
 	typescript = {
-		lsp = "tsserver"
+		lsp = {"tsserver"}
 	},
 	vim = {
-		lsp = "vimls"
+		lsp = {"vimls"}
 	},
 	lua = {
-		lsp = "sumneko_lua"
+		lsp = {"sumneko_lua" }
+	},
+	vue = {
+		lsp = {"volar"}
+	},
+	php = {
+		lsp = {"intelephense"}
+	},
+	css = {
+		lsp = {'cssls', 'tailwindcss'}
 	}
 }
 
 local treesitterConfigEnsureInstalled = {}
 local lspConfigEnsureInstalled = {}
 for lang, config in pairs(languageConfigs) do
-	table.insert(lspConfigEnsureInstalled, config.lsp)
+	for _, lspServer in ipairs(config.lsp) do
+		print(lspServer)
+		table.insert(lspConfigEnsureInstalled, lspServer)
+	end
 	table.insert(treesitterConfigEnsureInstalled, lang)
 end
 
@@ -89,12 +101,14 @@ local lsp_flags = {
 
 -- Add additional capabilities supported by nvim-cmp
 for _, config in pairs(languageConfigs) do
-	lspconfig[config.lsp].setup {
-		-- on_attach = my_custom_on_attach,
-		flags = lsp_flags,
-		on_attach = on_attach,
-		capabilities = capabilities,
-	}
+	for _, lspServer in ipairs(config.lsp) do
+		lspconfig[lspServer].setup {
+			-- on_attach = my_custom_on_attach,
+			flags = lsp_flags,
+			on_attach = on_attach,
+			capabilities = capabilities,
+		}
+	end
 end
 
 -- luasnip setup

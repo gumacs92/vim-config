@@ -6,7 +6,16 @@ local autosession = require'auto-session' -- saveing session automatically durin
 local lsp_lines =  require"lsp_lines" -- diagnostic text lines are much more prettier
 local pqf = require"pqf" -- prettier quickfix list
 local tmux = require"tmux"
+local nvim_autopairs = require"nvim-autopairs"
+local nvim_tree = require"nvim-tree"
 
+vim.g['loaded_netrw'] = 1
+vim.g['loaded_netrwPlugin'] = 1
+-- vim.opt.termguicolors = true
+
+nvim_tree.setup()
+
+nvim_autopairs.setup()
 tmux.setup()
 
 -- Vim quickfix reflector config
@@ -51,12 +60,8 @@ telescope.load_extension "file_browser"
 telescope.load_extension("session-lens")
 
 -- Setting up Keybindings for lua configured plugins
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>e",
-  ":Telescope file_browser<CR>",
-  { noremap = true }
-)
+vim.api.nvim_set_keymap( "n", "<leader>eo", ":NvimTreeFocus<CR>", { noremap = true })
+vim.api.nvim_set_keymap( "n", "<leader>ef", ":NvimTreeFindFile<CR>", { noremap = true })
 vim.api.nvim_set_keymap(
 	'n',
 	'<leader>p',
@@ -113,6 +118,7 @@ vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,te
 -- 	auto_save_enabled = true,
 -- 	auto_restore_enabled = true,
 -- })
+
 
 
 print "Sourced init.lua"
