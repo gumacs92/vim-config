@@ -24,7 +24,6 @@ else
 	Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
 	Plug 'nvim-telescope/telescope-project.nvim'
 	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-	Plug 'nvim-telescope/telescope-file-browser.nvim'
 	Plug 'nvim-tree/nvim-web-devicons'
 	Plug 'nvim-lualine/lualine.nvim'
 	Plug 'rmagatti/auto-session'

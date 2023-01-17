@@ -56,7 +56,6 @@ telescope.setup {
 
 -- Loading Telescope extensions
 telescope.load_extension('project')
-telescope.load_extension "file_browser"
 telescope.load_extension("session-lens")
 
 -- Setting up Keybindings for lua configured plugins
