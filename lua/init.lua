@@ -57,12 +57,20 @@ telescope.setup {
 			theme = "dropdown",
 			order_by = "asc",
 			sync_with_nvim_tree = true, -- default false
+		},
+		fzf = {
+			fuzzy = true,                    -- false will only do exact matching
+			override_generic_sorter = true,  -- override the generic sorter
+			override_file_sorter = true,     -- override the file sorter
+			case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+			-- the default case_mode is "smart_case"
 		}
 	}
 }
 
 -- Loading Telescope extensions
 -- telescope.load_extension('smart_history')
+telescope.load_extension('fzf')
 telescope.load_extension('project')
 telescope.load_extension("session-lens")
 
@@ -71,8 +79,8 @@ vim.api.nvim_set_keymap( "n", "<leader>eo", ":NvimTreeFocus<CR>", { noremap = tr
 vim.api.nvim_set_keymap( "n", "<leader>ef", ":NvimTreeFindFile<CR>", { noremap = true })
 vim.api.nvim_set_keymap( 'n', '<leader>p', ":lua require'telescope'.extensions.project.project{}<CR>", {noremap = true, silent = true})
 vim.api.nvim_set_keymap( 'n', '<leader>s', ":lua require('session-lens').search_session()<CR>", {noremap = true, silent = true})
-vim.api.nvim_set_keymap( 'n', '<C-p>', ":lua require'telescope.builtin'.find_files()<CR>", {noremap = true, silent = true})
-vim.api.nvim_set_keymap( 'n', '<leader>ff', ":Telescope live_grep<CR>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap( 'n', '<C-p>', ":lua require'telescope.builtin'.find_files({ignore=true,hidden=true})<CR>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap( 'n', '<leader>ff', ":lua require'telescope.builtin'.live_grep({ignore=true,hidden=true})<CR>", {noremap = true, silent = true})
 
 require('autocomplete')
 
