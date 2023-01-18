@@ -21,8 +21,10 @@ else
 	Plug 'tpope/vim-commentary'
 	Plug 'moll/vim-bbye'
 	Plug 'nvim-lua/plenary.nvim'
+	Plug 'kkharji/sqlite.lua'
 	Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
 	Plug 'nvim-telescope/telescope-project.nvim'
+	Plug 'nvim-telescope/telescope-smart-history.nvim'
 	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 	Plug 'nvim-tree/nvim-web-devicons'
 	Plug 'nvim-lualine/lualine.nvim'

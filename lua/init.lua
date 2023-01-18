@@ -1,5 +1,6 @@
 
 local telescope = require"telescope"
+local builtin = require"telescope.builtin"
 local trouble = require"trouble"
 local lualine = require'lualine'
 local autosession = require'auto-session' -- saveing session automatically during folder change
@@ -11,9 +12,11 @@ local nvim_tree = require"nvim-tree"
 
 vim.g['loaded_netrw'] = 1
 vim.g['loaded_netrwPlugin'] = 1
--- vim.opt.termguicolors = true
+vim.opt.termguicolors = true
 
-nvim_tree.setup()
+nvim_tree.setup {
+	sync_root_with_cwd = true
+}
 
 nvim_autopairs.setup()
 tmux.setup()
@@ -41,9 +44,13 @@ telescope.setup {
 			i = { ["<C-t>"] = trouble.open_with_trouble },
 			n = { ["<C-t>"] = trouble.open_with_trouble },
 		},
+		-- history = {
+		-- 	path = '~/.local/share/nvim/databases/telescope_history.sqlite3',
+		-- 	limit = 100,
+		-- }
 	},
 	extensions = {
-	project = {
+		project = {
 			base_dirs = {
 				'~/dev',
 			},
@@ -55,36 +62,17 @@ telescope.setup {
 }
 
 -- Loading Telescope extensions
+-- telescope.load_extension('smart_history')
 telescope.load_extension('project')
 telescope.load_extension("session-lens")
 
 -- Setting up Keybindings for lua configured plugins
 vim.api.nvim_set_keymap( "n", "<leader>eo", ":NvimTreeFocus<CR>", { noremap = true })
 vim.api.nvim_set_keymap( "n", "<leader>ef", ":NvimTreeFindFile<CR>", { noremap = true })
-vim.api.nvim_set_keymap(
-	'n',
-	'<leader>p',
-	":lua require'telescope'.extensions.project.project{}<CR>",
-	{noremap = true, silent = true}
-)
-vim.api.nvim_set_keymap(
-	'n',
-	'<leader>s',
-	":lua require('session-lens').search_session()<CR>",
-	{noremap = true, silent = true}
-)
-vim.api.nvim_set_keymap(
-	'n',
-	'<C-p>',
-	":Telescope find_files<CR>",
-	{noremap = true, silent = true}
-)
-vim.api.nvim_set_keymap(
-	'n',
-	'<leader>ff',
-	":Telescope live_grep<CR>",
-	{noremap = true, silent = true}
-)
+vim.api.nvim_set_keymap( 'n', '<leader>p', ":lua require'telescope'.extensions.project.project{}<CR>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap( 'n', '<leader>s', ":lua require('session-lens').search_session()<CR>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap( 'n', '<C-p>', ":lua require'telescope.builtin'.find_files()<CR>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap( 'n', '<leader>ff', ":Telescope live_grep<CR>", {noremap = true, silent = true})
 
 require('autocomplete')
 
