@@ -33,8 +33,9 @@ else
 	Plug 'rmagatti/session-lens'
 	Plug 'williamboman/mason.nvim'
 	Plug 'williamboman/mason-lspconfig.nvim'
+    Plug 'mhartington/formatter.nvim' 
 	Plug 'neovim/nvim-lspconfig'
-	Plug 'neovim/nvim-lspconfig' "  Collection of configurations for built-in LSP client
+	Plug 'neovim/nvim-lspconfig' "  Collection of configurations for built-in LSP clien t
 	Plug 'hrsh7th/nvim-cmp' "  Autocompletion plugin
 	Plug 'hrsh7th/cmp-nvim-lsp' "  LSP source for nvim-cmp
 	Plug 'saadparwaiz1/cmp_luasnip' "  Snippets source for nvim-cmp
@@ -49,6 +50,7 @@ else
 	Plug 'github/copilot.vim'
 	Plug 'aserowy/tmux.nvim'
 	Plug 'windwp/nvim-autopairs'
+    Plug 'windwp/nvim-ts-autotag'
 	Plug 'nvim-tree/nvim-tree.lua'
 	call plug#end()
 
@@ -60,10 +62,18 @@ else
 	set relativenumber
 	set number
 	" set syntax=on
-	set shiftwidth=4 | " Set shift width to 4 spaces.
-	set tabstop=4 | " Set tab width to 4 columns
+    set keymodel=startsel,stopsel    
+
+    autocmd FileType * setlocal shiftwidth=4 tabstop=4 expandtab
+    autocmd FileType typescript setlocal shiftwidth=2 tabstop=2 expandtab
+    autocmd FileType javascript setlocal shiftwidth=2 tabstop=2 expandtab
+    autocmd FileType typescriptreact setlocal shiftwidth=2 tabstop=2 expandtab
+    autocmd FileType javascriptreact setlocal shiftwidth=2 tabstop=2 expandtab
+    autocmd FileType vue setlocal shiftwidth=2 tabstop=2 expandtab
+
 	set mouse=a
 	set encoding=UTF-8
+
 
 	" set foldmethod=expr
 	" set foldexpr=nvim_treesitter#foldexpr()

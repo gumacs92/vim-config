@@ -18,6 +18,9 @@ inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 
+vnoremap <Del> c
+vnoremap <Bs> c
+
 if exists('g:vscode')
     " VSCode extension
 else
@@ -27,16 +30,17 @@ else
 	nnoremap <c-h> <c-w>h
 	nnoremap <c-l> <c-w>l
 
-	" nnoremap <silent> <C-Space> :call fzf#run(fzf#wrap({'source': 'find $HOME/dev -maxdepth 2 -type d', 'sink': 'e'}))<CR>
+    " nnoremap <silent> <leader>f :Format<CR>
+    nnoremap <silent> <leader>F :FormatWrite<CR>
 
 	nnoremap <leader>ff <cmd>Telescope find_files<cr>
 	nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 	nnoremap <leader>fb <cmd>Telescope buffers<cr>
 	nnoremap <leader>fh <cmd>Telescope help_tags<cr>F
 
-	" nnoremap <silent> <C-p> :Files<CR> 
-	" nnoremap <silent> <C-f> :Ag<Cr>	
-	
+	" nnoremap <silent> <C-p> :Files<CR>
+	" nnoremap <silent> <C-f> :Ag<Cr>
+
 	" Vim Script
 	nnoremap <leader>xx <cmd>TroubleToggle<cr>
 	nnoremap <leader>xw <cmd>TroubleToggle workspace_diagnostics<cr>
@@ -44,6 +48,7 @@ else
 	nnoremap <leader>xq <cmd>TroubleToggle quickfix<cr>
 	nnoremap <leader>xl <cmd>TroubleToggle loclist<cr>
 	nnoremap gR <cmd>TroubleToggle lsp_references<cr>
+
 endif
 
 echom "Sourced vim/mappings.vim"

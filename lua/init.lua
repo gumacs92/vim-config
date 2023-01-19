@@ -1,6 +1,5 @@
 
 local telescope = require"telescope"
-local builtin = require"telescope.builtin"
 local trouble = require"trouble"
 local lualine = require'lualine'
 local autosession = require'auto-session' -- saveing session automatically during folder change
@@ -8,6 +7,7 @@ local lsp_lines =  require"lsp_lines" -- diagnostic text lines are much more pre
 local pqf = require"pqf" -- prettier quickfix list
 local tmux = require"tmux"
 local nvim_autopairs = require"nvim-autopairs"
+local nvim_autotag = require"nvim-ts-autotag"
 local nvim_tree = require"nvim-tree"
 
 vim.g['loaded_netrw'] = 1
@@ -19,6 +19,7 @@ nvim_tree.setup {
 }
 
 nvim_autopairs.setup()
+nvim_autotag.setup()
 tmux.setup()
 
 -- Vim quickfix reflector config
@@ -79,15 +80,17 @@ vim.api.nvim_set_keymap( "n", "<leader>eo", ":NvimTreeFocus<CR>", { noremap = tr
 vim.api.nvim_set_keymap( "n", "<leader>ef", ":NvimTreeFindFile<CR>", { noremap = true })
 vim.api.nvim_set_keymap( 'n', '<leader>p', ":lua require'telescope'.extensions.project.project{}<CR>", {noremap = true, silent = true})
 vim.api.nvim_set_keymap( 'n', '<leader>s', ":lua require('session-lens').search_session()<CR>", {noremap = true, silent = true})
-vim.api.nvim_set_keymap( 'n', '<C-p>', ":lua require'telescope.builtin'.find_files({ignore=true,hidden=true})<CR>", {noremap = true, silent = true})
-vim.api.nvim_set_keymap( 'n', '<leader>ff', ":lua require'telescope.builtin'.live_grep({ignore=true,hidden=true})<CR>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap( 'n', '<C-p>', ":lua require'telescope.builtin'.find_files({ignore=true,hidden=true,find_command=rg})<CR>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap( 'n', '<leader>ff', ":lua require'telescope.builtin'.live_grep({ignore=true,hidden=true,find_command=rg})<CR>", {noremap = true, silent = true})
 
-require('autocomplete')
+require ('formatter-config')
+require ('autocomplete-config')
 
 lualine.setup {
 	sections = {
 		lualine_c = {
-			require('auto-session-library').current_session_name
+			require('auto-session-library').current_session_name,
+            'filename'
 		}
 	}
 }
