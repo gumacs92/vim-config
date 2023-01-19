@@ -3,7 +3,6 @@ echo 'Created init.vim successfully!'
 let path = expand('<sfile>:p:h')
 exec 'source' path . '/vim/mappings.vim' 
 
-set incsearch
 set ignorecase
 set hlsearch
 set showmatch
@@ -19,6 +18,8 @@ else
 	call plug#begin('~/.config/nvim/plugged')
 	Plug 'tpope/vim-surround'
 	Plug 'tpope/vim-commentary'
+    Plug 'tpope/vim-abolish'
+    Plug 'tpope/vim-sensible'
 	Plug 'moll/vim-bbye'
 	Plug 'nvim-lua/plenary.nvim' " dependency for telescope
 	Plug 'kkharji/sqlite.lua'
@@ -44,7 +45,6 @@ else
 	Plug 'https://git.sr.ht/~whynothugo/lsp_lines.nvim' 
 	Plug 'https://gitlab.com/yorickpeterse/nvim-pqf'
 	Plug 'https://github.com/stefandtw/quickfix-reflector.vim'
-	Plug 'tpope/vim-abolish'
 	Plug 'sainnhe/everforest'
 	Plug 'altercation/vim-colors-solarized'	
 	Plug 'github/copilot.vim'
