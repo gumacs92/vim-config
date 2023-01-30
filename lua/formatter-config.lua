@@ -11,6 +11,10 @@ require"formatter".setup {
         typescriptreact = { require("formatter.filetypes.typescriptreact").prettier },
         javascript = { require("formatter.filetypes.javascript").prettier },
         javascriptreact = { require("formatter.filetypes.javascriptreact").prettier },
+        vue = {
+            -- require("formatter.filetypes.typescript").prettier,
+            require("formatter.filetypes.html").prettier
+        },
 
         -- Use the special "*" filetype for defining formatter configurations on
         -- any filetype

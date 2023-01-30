@@ -24,6 +24,9 @@ local languageConfigs = {
 	php = {
 		lsp = {"intelephense"}
 	},
+    html = {
+        lsp = {"html"}
+    },
 	css = {
 		lsp = {'cssls', 'tailwindcss'}
 	}
@@ -49,6 +52,9 @@ masonLspConfig.setup {
 -- treesitter config
 treesitter.setup {
     auto_install = true,
+    autotag = {
+        enable = true
+    },
 	ensure_installed = treesitterConfigEnsureInstalled,
 	highlight = {
 		enable = true
@@ -60,7 +66,6 @@ treesitter.setup {
 		enable = true
 	}
 }
-
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap=true, silent=true }
@@ -68,6 +73,7 @@ vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
+vim.keymap.set('n', '<leader>rd', ":LspRestart<CR>", opts)
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer

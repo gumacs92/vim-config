@@ -7,8 +7,15 @@ local lsp_lines =  require"lsp_lines" -- diagnostic text lines are much more pre
 local pqf = require"pqf" -- prettier quickfix list
 local tmux = require"tmux"
 local nvim_autopairs = require"nvim-autopairs"
-local nvim_autotag = require"nvim-ts-autotag"
+-- local nvim_autotag = require"nvim-ts-autotag"
 local nvim_tree = require"nvim-tree"
+
+
+local vscode = require"vscode"
+vscode.setup{
+    -- Enable italic comment
+    italic_comments = true,
+}
 
 vim.g['loaded_netrw'] = 1
 vim.g['loaded_netrwPlugin'] = 1
@@ -19,7 +26,7 @@ nvim_tree.setup {
 }
 
 nvim_autopairs.setup()
-nvim_autotag.setup()
+-- nvim_autotag.setup()
 tmux.setup()
 
 -- Vim quickfix reflector config
@@ -35,9 +42,36 @@ lsp_lines.setup()
 
 vim.diagnostic.config({
 	virtual_text = false,
-	virtual_lines = true
+	virtual_lines = true,
+    signs = true,
+    underline = true,
+    -- update_in_insert = true,
+    severity_sort = true,
 })
 
+local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+for type, icon in pairs(signs) do
+  local hl = "DiagnosticSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
+-- local M = {}
+
+local icons = {
+  Class = " ", Color = " ", Constant = " ", Constructor = " ", Enum = "了 ",
+  EnumMember = " ", Field = " ", File = " ", Folder = " ", Function = " ",
+  Interface = "ﰮ ", Keyword = " ", Method = "ƒ ", Module = " ", Property = " ",
+  Snippet = "﬌ ", Struct = " ", Text = " ", Unit = " ", Value = " ",
+  Variable = " ",
+}
+-- function M.setup()
+local kinds = vim.lsp.protocol.CompletionItemKind
+for i, kind in ipairs(kinds) do
+    kinds[i] = icons[kind] or kind
+end
+-- end
+
+-- M.setup()
+-- return M
 -- Configuring Telescope plugin
 telescope.setup {
 	defaults = {
@@ -87,6 +121,9 @@ require ('formatter-config')
 require ('autocomplete-config')
 
 lualine.setup {
+    options = {
+        theme = 'vscode'
+    },
 	sections = {
 		lualine_c = {
 			require('auto-session-library').current_session_name,

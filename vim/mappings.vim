@@ -2,8 +2,8 @@ let map = "\\"
 
 nnoremap <leader><leader><CR> :source %<CR> | :echom 'Sourced file'
 nnoremap <leader>v<CR> :e $MYVIMRC<CR>
-nnoremap <leader>q :Bdelete<CR>
-nnoremap <leader>qa :bufdo :Bdelete<CR>
+nnoremap <leader>bb :Bdelete<CR>
+nnoremap <leader>ab :bufdo :Bdelete<CR>
 
 inoremap jk <C-C>
 " inoremap <ESC> <NOP>

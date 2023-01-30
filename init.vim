@@ -45,7 +45,8 @@ else
 	Plug 'https://git.sr.ht/~whynothugo/lsp_lines.nvim' 
 	Plug 'https://gitlab.com/yorickpeterse/nvim-pqf'
 	Plug 'https://github.com/stefandtw/quickfix-reflector.vim'
-	Plug 'sainnhe/everforest'
+	" Plug 'sainnhe/everforest'
+    Plug 'Mofiqul/vscode.nvim'
 	Plug 'altercation/vim-colors-solarized'	
 	Plug 'github/copilot.vim'
 	Plug 'aserowy/tmux.nvim'
@@ -58,7 +59,7 @@ else
 
 	set splitbelow
 	set splitright
-	set signcolumn=number
+	set signcolumn=yes
 	set relativenumber
 	set number
 	" set syntax=on
@@ -80,7 +81,7 @@ else
 	" set nofoldenable
 
 	set background=dark
-	colorscheme everforest
+	" colorscheme everforest
 	" hi ActiveWindow guibg=#21242b
 	" hi InactiveWindow guibg=#282C34
 	" set winhighlight=Normal:ActiveWindow,NormalNC:InactiveWindow
