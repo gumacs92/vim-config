@@ -18,6 +18,7 @@ Plug 'tpope/vim-repeat'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'wellle/targets.vim'
 Plug 'machakann/vim-sandwich'
+Plug'justinmk/vim-sneak'
 " buffer related
 Plug 'moll/vim-bbye'
 Plug 'nvim-lua/plenary.nvim' " dependency for telescope
@@ -35,13 +36,12 @@ Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'mhartington/formatter.nvim'
 Plug 'neovim/nvim-lspconfig'
-Plug 'neovim/nvim-lspconfig' "  Collection of configurations for built-in LSP clien t
+Plug 'neovim/nvim-lspconfig' "  Collection of configurations for built-in LSP client
 Plug 'hrsh7th/nvim-cmp' "  Autocompletion plugin
 Plug 'hrsh7th/cmp-nvim-lsp' "  LSP source for nvim-cmp
 Plug 'saadparwaiz1/cmp_luasnip' "  Snippets source for nvim-cmp
 Plug 'L3MON4D3/LuaSnip' "  Snippets plugin
 Plug 'folke/trouble.nvim'
-Plug 'https://git.sr.ht/~whynothugo/lsp_lines.nvim'
 Plug 'https://gitlab.com/yorickpeterse/nvim-pqf'
 Plug 'https://github.com/stefandtw/quickfix-reflector.vim'
 " Plug 'sainnhe/everforest'
@@ -85,6 +85,10 @@ set background=dark
 " hi ActiveWindow guibg=#21242b
 " hi InactiveWindow guibg=#282C34
 " set winhighlight=Normal:ActiveWindow,NormalNC:InactiveWindow
+
+" TODO replace magent with somtehing more styliest
+" highlight Sneak guifg=black guibg=red ctermfg=black ctermbg=red
+" highlight SneakScope guifg=red guibg=yellow ctermfg=red ctermbg=yellow
 
 au TextYankPost * silent! lua vim.highlight.on_yank()
 " format on save

@@ -3,7 +3,6 @@ local telescope = require"telescope"
 local trouble = require"trouble"
 local lualine = require'lualine'
 local autosession = require'auto-session' -- saveing session automatically during folder change
-local lsp_lines =  require"lsp_lines" -- diagnostic text lines are much more prettier
 local pqf = require"pqf" -- prettier quickfix list
 local tmux = require"tmux"
 local nvim_autopairs = require"nvim-autopairs"
@@ -39,11 +38,8 @@ M.setup = function ()
     -- Prettier quick fix list setup
     pqf.setup()
 
-    -- Diagnostic lines setup and config
-    lsp_lines.setup()
-
     vim.diagnostic.config({
-        virtual_text = false,
+        virtual_text = true,
         virtual_lines = true,
         signs = true,
         underline = true,
