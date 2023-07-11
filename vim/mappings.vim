@@ -1,11 +1,11 @@
 let map = "\\"
 
-nnoremap <leader><leader><CR> :source %<CR> | :echom 'Sourced file'
+nnoremap <leader><leader><CR> :source $MYVIMRC<CR> | :echom 'Sourced file'
 nnoremap <leader>v<CR> :e $MYVIMRC<CR>
 nnoremap <leader>bb :Bdelete<CR>
 nnoremap <leader>ab :bufdo :Bdelete<CR>
 
-inoremap jk <C-C>
+inoremap jk <ESC>
 " inoremap <ESC> <NOP>
 
 nnoremap o o<esc><S-v>=

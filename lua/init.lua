@@ -8,7 +8,7 @@ local languageConfigs = {
         lsp = {"vimls"}
     },
     lua = {
-        lsp = {"sumneko_lua" }
+        lsp = {"lua_ls" }
     },
     vue = {
         lsp = {"volar"}
@@ -21,6 +21,12 @@ local languageConfigs = {
     },
     css = {
         lsp = {'cssls', 'tailwindcss'}
+    },
+    java = {
+        lsp = {"jdtls"}
+    },
+    kotlin = {
+        lsp = {"kotlin_language_server"}
     }
 }
 
@@ -44,10 +50,12 @@ require("indent_blankline").setup {
     -- show_current_context_start = false,
 }
 
+require'neovide-config/init'.setup()
+require'theme-config/init'.setup()
+require'treesitter-config/init'.setup(treesitterConfig)
 require"general-config/init".setup()
 require"formatter-config/init".setup()
 require"autocomplete-config/init".setup()
 require'lsp-config/init'.setup(lspConfig, capabilities)
-require'treesitter-config/init'.setup(treesitterConfig)
 
 print "Sourced init.lua"

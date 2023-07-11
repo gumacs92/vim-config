@@ -1,3 +1,4 @@
+
 local treesitter = require"nvim-treesitter.configs"
 
 local M = {}
@@ -10,7 +11,8 @@ M.setup = function (ensure_installed)
             enable = true
         },
         context_commentstring = {
-            enable = true
+            enable = true,
+            enable_autocmd = false,
         },
         ensure_installed = ensure_installed,
         highlight = {
@@ -18,8 +20,9 @@ M.setup = function (ensure_installed)
         },
         incremental_selection = {
             enable = true
-        }
+        },
     }
+
 end
 
 return M

@@ -8,17 +8,19 @@ set hlsearch
 set showmatch
 
 call plug#begin('~/.config/nvim/plugged')
-" Plug 'tpope/vim-surround'
-" Editing related plugins
-Plug 'tpope/vim-commentary'
-Plug 'JoosepAlviste/nvim-ts-context-commentstring'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-obsession'
+Plug 'dhruvasagar/vim-prosession'
+Plug 'JoosepAlviste/nvim-ts-context-commentstring'
+Plug 'numToStr/Comment.nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'wellle/targets.vim'
 Plug 'machakann/vim-sandwich'
-Plug'justinmk/vim-sneak'
+Plug 'justinmk/vim-sneak'
+Plug 'windwp/nvim-ts-autotag'
+Plug 'windwp/nvim-autopairs'
 " buffer related
 Plug 'moll/vim-bbye'
 Plug 'nvim-lua/plenary.nvim' " dependency for telescope
@@ -30,8 +32,6 @@ Plug 'nvim-telescope/telescope-smart-history.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'nvim-lualine/lualine.nvim'
-Plug 'rmagatti/auto-session'
-Plug 'rmagatti/session-lens'
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'mhartington/formatter.nvim'
@@ -44,13 +44,10 @@ Plug 'L3MON4D3/LuaSnip' "  Snippets plugin
 Plug 'folke/trouble.nvim'
 Plug 'https://gitlab.com/yorickpeterse/nvim-pqf'
 Plug 'https://github.com/stefandtw/quickfix-reflector.vim'
-" Plug 'sainnhe/everforest'
-Plug 'Mofiqul/vscode.nvim'
+Plug 'olivercederborg/poimandres.nvim'
 Plug 'altercation/vim-colors-solarized'
 Plug 'github/copilot.vim'
 Plug 'aserowy/tmux.nvim'
-Plug 'windwp/nvim-autopairs'
-Plug 'windwp/nvim-ts-autotag'
 Plug 'nvim-tree/nvim-tree.lua'
 call plug#end()
 
@@ -79,16 +76,14 @@ set encoding=UTF-8
 " set foldexpr=nvim_treesitter#foldexpr()
 " autocmd BufReadPost,FileReadPost * normal zR
 
-set clipboard=unnamedplus
-set background=dark
-" colorscheme everforest
-" hi ActiveWindow guibg=#21242b
-" hi InactiveWindow guibg=#282C34
-" set winhighlight=Normal:ActiveWindow,NormalNC:InactiveWindow
+" set clipboard=unnamedplus
+hi ActiveWindow guibg=#21242b
+hi InactiveWindow guibg=#282C34
+set winhighlight=Normal:ActiveWindow,NormalNC:InactiveWindow
 
 " TODO replace magent with somtehing more styliest
-" highlight Sneak guifg=black guibg=red ctermfg=black ctermbg=red
-" highlight SneakScope guifg=red guibg=yellow ctermfg=red ctermbg=yellow
+highlight Sneak guifg=black guibg=red ctermfg=black ctermbg=red
+highlight SneakScope guifg=red guibg=yellow ctermfg=red ctermbg=yellow
 
 au TextYankPost * silent! lua vim.highlight.on_yank()
 " format on save
@@ -96,6 +91,9 @@ augroup FormatAutogroup
   autocmd!
   autocmd BufWritePost * FormatWrite
 augroup END
+
+autocmd DirChanged * silent! Prosession
+
 
 let g:copilot_no_tab_map = v:true
 

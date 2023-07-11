@@ -6,6 +6,14 @@
 <script lang="ts" setup>
 definePageMeta({});
 
+if(true){
+
+} else if(false){
+
+} else {
+asdfasdf
+}
+
 const tes = ref(false);
 
 const te = computed(() => {
@@ -18,14 +26,14 @@ const test9 = () => {
 
 const test10 = () => {
   console.log("test10");
-};                  
+};
 
 const test11 = () => {
   console.log("test11");
 };
 
 
-//functio which adds two number
+// functio which adds two number
 const adder = (a: number, b: number) => {
   return a + b;
 };
