@@ -26,7 +26,8 @@ M.setup = function(ensure_installed, capabilities)
     vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
     vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
     vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
-    vim.keymap.set('n', '<leader>rd', ":LspRestart<CR>", opts)
+    vim.keymap.set('n', '<leader>ds', ":LspStop<CR>", opts)
+    vim.keymap.set('n', '<leader>dr', ":LspStart<CR>", opts)
 
     -- Use an on_attach function to only map the following keys
     -- after the language server attaches to the current buffer

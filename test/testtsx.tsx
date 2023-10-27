@@ -2,7 +2,7 @@
 let hello = true
 
 function test() {
-  // if(true){
+          if(true){
   } else if(false) {
 // sadfasdf
 // asdfasdf

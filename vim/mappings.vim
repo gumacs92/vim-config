@@ -1,9 +1,10 @@
 let map = "\\"
 
-nnoremap <leader><leader><CR> :source $MYVIMRC<CR> | :echom 'Sourced file'
+nnoremap <leader><leader><CR> :source $MYVIMRC<CR> | :call SourceLua() | :echom 'Sourced file'
 nnoremap <leader>v<CR> :e $MYVIMRC<CR>
-nnoremap <leader>bb :Bdelete<CR>
-nnoremap <leader>ab :bufdo :Bdelete<CR>
+nnoremap <leader>q :BufDel!<CR>
+nnoremap <leader>cq :BufDelOther!<CR>
+nnoremap <leader>aq :BufDelAll!<CR>
 
 inoremap jk <ESC>
 " inoremap <ESC> <NOP>
@@ -22,10 +23,10 @@ vnoremap <Del> c
 vnoremap <Bs> c
 
 " nnoremap <C-P> :FZF<CR>
-nnoremap <c-j> <c-w>j
-nnoremap <c-k> <c-w>k
-nnoremap <c-h> <c-w>h
-nnoremap <c-l> <c-w>l
+nnoremap <c-j> 30<c-w>j
+nnoremap <c-k> 30<c-w>k
+nnoremap <c-h> 30<c-w>h
+nnoremap <c-l> 30<c-w>l
 
 " nnoremap <silent> <leader>f :Format<CR>
 nnoremap <silent> <leader>F :FormatWrite<CR>
@@ -37,14 +38,6 @@ nnoremap <leader>fh <cmd>Telescope help_tags<cr>F
 
 " nnoremap <silent> <C-p> :Files<CR>
 " nnoremap <silent> <C-f> :Ag<Cr>
-
-" Vim Script
-nnoremap <leader>xx <cmd>TroubleToggle<cr>
-nnoremap <leader>xw <cmd>TroubleToggle workspace_diagnostics<cr>
-nnoremap <leader>xd <cmd>TroubleToggle document_diagnostics<cr>
-nnoremap <leader>xq <cmd>TroubleToggle quickfix<cr>
-nnoremap <leader>xl <cmd>TroubleToggle loclist<cr>
-nnoremap gR <cmd>TroubleToggle lsp_references<cr>
 
 map f <Plug>Sneak_f
 map F <Plug>Sneak_F

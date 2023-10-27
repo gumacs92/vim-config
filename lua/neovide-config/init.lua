@@ -5,6 +5,7 @@ M.setup = function ()
         vim.o.guifont = 'FiraCode:h10'
         vim.o.linespace = 10
 
+        vim.g.neovide_no_idle = true
         vim.g.neovide_cursor_animation_length = 0.05
         vim.g.neovide_scroll_animation_length = 0.1
 

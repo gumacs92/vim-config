@@ -11,7 +11,10 @@ local languageConfigs = {
         lsp = {"lua_ls" }
     },
     vue = {
-        lsp = {"volar"}
+        lsp = {"volar", "tsserver"}
+    },
+    svelte ={
+        lsp = {"svelte"}
     },
     php = {
         lsp = {"intelephense"}
@@ -28,6 +31,10 @@ local languageConfigs = {
     kotlin = {
         lsp = {"kotlin_language_server"}
     }
+}
+
+capabilities.workspace.didChangeWatchedFiles = {
+    dynamicRegistration = true
 }
 
 local treesitterConfig = {}

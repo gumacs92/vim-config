@@ -23,6 +23,7 @@ Plug 'windwp/nvim-ts-autotag'
 Plug 'windwp/nvim-autopairs'
 " buffer related
 Plug 'moll/vim-bbye'
+Plug 'ojroques/nvim-bufdel'
 Plug 'nvim-lua/plenary.nvim' " dependency for telescope
 Plug 'kkharji/sqlite.lua'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
@@ -30,6 +31,7 @@ Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-telescope/telescope-project.nvim'
 Plug 'nvim-telescope/telescope-smart-history.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" Plug 'kevinhwang91/nvim-bqf', {'do': ':BqfEnable'}
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'williamboman/mason.nvim'
@@ -41,7 +43,6 @@ Plug 'hrsh7th/nvim-cmp' "  Autocompletion plugin
 Plug 'hrsh7th/cmp-nvim-lsp' "  LSP source for nvim-cmp
 Plug 'saadparwaiz1/cmp_luasnip' "  Snippets source for nvim-cmp
 Plug 'L3MON4D3/LuaSnip' "  Snippets plugin
-Plug 'folke/trouble.nvim'
 Plug 'https://gitlab.com/yorickpeterse/nvim-pqf'
 Plug 'https://github.com/stefandtw/quickfix-reflector.vim'
 Plug 'olivercederborg/poimandres.nvim'
@@ -51,7 +52,14 @@ Plug 'aserowy/tmux.nvim'
 Plug 'nvim-tree/nvim-tree.lua'
 call plug#end()
 
-lua require('init')
+function SourceLua() abort
+lua << EOF
+package.loaded['init'] = nil
+require('init')
+EOF
+endfunction
+
+call SourceLua()
 
 set splitbelow
 set splitright
@@ -76,7 +84,7 @@ set encoding=UTF-8
 " set foldexpr=nvim_treesitter#foldexpr()
 " autocmd BufReadPost,FileReadPost * normal zR
 
-" set clipboard=unnamedplus
+set clipboard=unnamedplus
 hi ActiveWindow guibg=#21242b
 hi InactiveWindow guibg=#282C34
 set winhighlight=Normal:ActiveWindow,NormalNC:InactiveWindow
@@ -84,6 +92,14 @@ set winhighlight=Normal:ActiveWindow,NormalNC:InactiveWindow
 " TODO replace magent with somtehing more styliest
 highlight Sneak guifg=black guibg=red ctermfg=black ctermbg=red
 highlight SneakScope guifg=red guibg=yellow ctermfg=red ctermbg=yellow
+
+" bqf highlight
+" hi default link BqfPreviewFloat Normal
+" hi default link BqfPreviewBorder FloatBorder
+" hi default link BqfPreviewTitle Title
+" hi default link BqfPreviewThumb Thumb
+" hi default link BqfPreviewCursor Cursor
+" hi default link BqfPreviewRange IncSearch
 
 au TextYankPost * silent! lua vim.highlight.on_yank()
 " format on save

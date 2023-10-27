@@ -1,11 +1,11 @@
 
 local telescope = require"telescope"
-local trouble = require"trouble"
 local pqf = require"pqf" -- prettier quickfix list
 local tmux = require"tmux"
 local nvim_autopairs = require"nvim-autopairs"
 local comment = require"Comment"
 local commentstring = require'ts_context_commentstring.integrations.comment_nvim'
+local bufdel = require'bufdel'
 
 local M = {}
 
@@ -32,6 +32,10 @@ M.setup = function ()
     comment.setup {
     --     ignore = '^$',
         pre_hook = commentstring.create_pre_hook()
+    }
+
+    bufdel.setup {
+        quit = false
     }
 
     vim.diagnostic.config({
@@ -64,8 +68,6 @@ M.setup = function ()
     end
     -- end
 
-    -- M.setup()
-    -- return M
     -- Configuring Telescope plugin
     telescope.setup {
         defaults = {
@@ -78,10 +80,6 @@ M.setup = function ()
                 "vendor",
                 "yarn.lock",
                 "package-lock.json",
-            },
-            mappings = {
-                i = { ["<C-t>"] = trouble.open_with_trouble },
-                n = { ["<C-t>"] = trouble.open_with_trouble },
             },
             -- history = {
             -- 	path = '~/.local/share/nvim/databases/telescope_history.sqlite3',
@@ -118,7 +116,7 @@ M.setup = function ()
     vim.api.nvim_set_keymap( 'n', '<leader>p', ":lua require'telescope'.extensions.project.project{}<CR>", {noremap = true, silent = true})
     -- vim.api.nvim_set_keymap( 'n', '<leader>s', ":lua require('session-lens').search_session()<CR>", {noremap = true, silent = true})
     vim.api.nvim_set_keymap( 'n', '<C-p>', ":lua require'telescope.builtin'.find_files({find_command=rg})<CR>", {noremap = true, silent = true})
-    vim.api.nvim_set_keymap( 'n', '<leader>ff', ":lua require'telescope.builtin'.live_grep({find_command=rg})<CR>", {noremap = true, silent = true})
+    vim.api.nvim_set_keymap( 'n', '<leader>ff', ":Telescope live_grep find_command=rg<CR>", {noremap = true, silent = true})
 
 
     -- autosession.setup {
