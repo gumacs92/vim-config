@@ -28,8 +28,7 @@ nnoremap <c-k> 30<c-w>k
 nnoremap <c-h> 30<c-w>h
 nnoremap <c-l> 30<c-w>l
 
-" nnoremap <silent> <leader>f :Format<CR>
-nnoremap <silent> <leader>F :FormatWrite<CR>
+nnoremap <silent> <leader>f :lua vim.lsp.buf.format()<CR>
 
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>

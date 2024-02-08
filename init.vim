@@ -50,6 +50,12 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'github/copilot.vim'
 Plug 'aserowy/tmux.nvim'
 Plug 'nvim-tree/nvim-tree.lua'
+" nvim-dap and extension installs
+Plug 'mfussenegger/nvim-dap'
+Plug 'jay-babu/mason-nvim-dap.nvim',
+" null-ls install and extensions
+Plug 'jose-elias-alvarez/null-ls.nvim'
+Plug 'jay-babu/mason-null-ls.nvim'
 call plug#end()
 
 function SourceLua() abort
@@ -105,7 +111,7 @@ au TextYankPost * silent! lua vim.highlight.on_yank()
 " format on save
 augroup FormatAutogroup
   autocmd!
-  autocmd BufWritePost * FormatWrite
+  autocmd BufWritePost * lua vim.lsp.buf.format()
 augroup END
 
 autocmd DirChanged * silent! Prosession

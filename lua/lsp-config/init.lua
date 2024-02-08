@@ -1,5 +1,3 @@
-
-local mason = require"mason"
 local masonLspConfig = require"mason-lspconfig"
 local lspconfig = require('lspconfig')
 
@@ -8,9 +6,9 @@ local M = {}
 
 M.setup = function(ensure_installed, capabilities)
     -- Configuring mason
-    mason.setup()
     masonLspConfig.setup {
-        ensure_installed = ensure_installed
+        ensure_installed = ensure_installed,
+        automatic_installation = true
     }
 
     local lsp_flags = {
