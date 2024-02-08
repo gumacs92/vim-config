@@ -2,7 +2,7 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 local languageConfigs = {
     typescript = {
-        lsp = {"tsserver"}
+        lsp = {"tsserver", "eslint"}
     },
     vim = {
         lsp = {"vimls"}
@@ -11,7 +11,7 @@ local languageConfigs = {
         lsp = {"lua_ls" }
     },
     vue = {
-        lsp = {"volar", "tsserver"}
+        lsp = {"volar", "eslint"}
     },
     svelte ={
         lsp = {"svelte"}
@@ -33,8 +33,12 @@ local languageConfigs = {
     }
 }
 
-capabilities.workspace.didChangeWatchedFiles = {
-    dynamicRegistration = true
+capabilities = {
+    workspace = {
+        didChangeWatchedFiles = {
+            ddynamicRegistration = true
+        }
+    }
 }
 
 local treesitterConfig = {}
@@ -51,11 +55,11 @@ end
 vim.opt.list = true
 -- vim.opt.listchars:append "space:⋅"
 vim.opt.listchars:append "eol:↴"
-require("indent_blankline").setup {
-    space_char_blankline = " ",
-    show_current_context = true,
-    -- show_current_context_start = false,
-}
+-- require("indent_blankline").setup {
+--     space_char_blankline = " ",
+--     show_current_context = true,
+--     -- show_current_context_start = false,
+-- }
 
 require'neovide-config/init'.setup()
 require'theme-config/init'.setup()
