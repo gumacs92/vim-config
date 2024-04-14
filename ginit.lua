@@ -1,8 +1,4 @@
-local M = {}
 
-M.setup = function()
-    if vim.g.neovide then
-        -- fonts must be installed inside windows
         vim.o.guifont = 'MonaspiceNe NFM Medium:h10'
         vim.o.linespace = 10
 
@@ -20,7 +16,3 @@ M.setup = function()
         end
         vim.keymap.set('n', '<C-=>', function() change_scale_factor(0.1) end)
         vim.keymap.set('n', '<C-->', function() change_scale_factor(-0.1) end)
-    end
-end
-
-return M

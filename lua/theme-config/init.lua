@@ -1,8 +1,12 @@
 local lualine = require 'lualine'
 local poimandres = require('poimandres')
-local nvim_tree = require 'nvim-tree'
+-- local nvim_tree = require 'nvim-tree'
 local mini_session = require('mini.sessions')
 local mini_starter = require('mini.starter')
+local oil = require("oil")
+local status_const = require "oil-vcs-status.constant.status"
+
+local StatusType = status_const.StatusType
 
 local M = {}
 
@@ -15,16 +19,17 @@ M.setup = function()
         disable_italics = false,          -- disable italics
     }
 
--- hi ActiveWindow guibg=#21242b
--- hi InactiveWindow guibg=#282C34
--- highlight Sneak guifg=black guibg=red ctermfg=black ctermbg=red
--- highlight SneakScope guifg=red guibg=yellow ctermfg=red ctermbg=yellow
---
--- " TODO replace magent with somtehing more styliest
+    -- hi ActiveWindow guibg=#21242b
+    -- hi InactiveWindow guibg=#282C34
+    -- highlight Sneak guifg=black guibg=red ctermfg=black ctermbg=red
+    -- highlight SneakScope guifg=red guibg=yellow ctermfg=red ctermbg=yellow
+    --
+    -- " TODO replace magent with somtehing more styliest
     vim.api.nvim_set_hl(0, 'ActiveWindow', { bg = '#21242b' })
     vim.api.nvim_set_hl(0, 'InactiveWindow', { bg = '#282C34' })
     vim.api.nvim_set_hl(0, 'Sneak', { fg = 'black', bg = 'red', ctermfg = 'black', ctermbg = 'red' })
     vim.api.nvim_set_hl(0, 'SneakScope', { fg = 'red', bg = 'yellow', ctermfg = 'red', ctermbg = 'yellow' })
+
 
     vim.cmd('colorscheme poimandres')
     lualine.setup {
@@ -32,39 +37,76 @@ M.setup = function()
             theme = 'poimandres'
         },
     }
-
-    nvim_tree.setup {
-        sync_root_with_cwd = true,
-        git = {
-            ignore = false,
+    oil.setup {
+        win_options = {
+            signcolumn = "yes:2",
         },
-        -- renderer = {
-        --     icons = {
-        --         padding = " ",
-        --         glyphs = {
-        --             folder = {
-        --               arrow_closed = "➡️",
-        --               arrow_open = "⬇️",
-        --               default = "📁",
-        --               open = "📂",
-        --               empty = "📁",
-        --               empty_open = "📂",
-        --               symlink = "🔗",
-        --               symlink_open = "🔗",
-        --             },
-        --             git = {
-        --               unstaged = "❌",
-        --               staged = "✅",
-        --               unmerged = "🔀",
-        --               renamed = "📝",
-        --               untracked = "🌟",
-        --               deleted = "➖",
-        --               ignored = "⭕",
-        --             }
-        --         }
-        --     }
-        -- }
+        show_ignored = true,
+        keymaps = {
+            ["g?"] = "actions.show_help",
+            ["<CR>"] = "actions.select",
+            ["<C-s>"] = "actions.preview",
+            ["<C-v>"] = "actions.select_vsplit",
+            ["<C-x>"] = "actions.select_split",
+            ["<C-t>"] = "actions.select_tab",
+            ["<C-c>"] = function()
+                oil.discard_all_changes()
+                oil.close()
+            end,
+            ["-"] = "actions.parent",
+            ["_"] = "actions.open_cwd",
+            ["`"] = "actions.cd",
+            ["~"] = "actions.tcd",
+            ["gr"] = "actions.refresh",
+            ["gs"] = "actions.change_sort",
+            ["gx"] = "actions.open_external",
+            ["g."] = "actions.toggle_hidden",
+            ["g\\"] = "actions.toggle_trash",
+        },
+        use_default_keymaps = false
     }
+    require "oil-vcs-status".setup {
+        -- Executable path of each version control system.
+        vcs_executable = {
+            git = "git",
+            svn = "svn",
+        },
+        status_symbol = {
+            [StatusType.Added]               = "",
+            [StatusType.Copied]              = "󰆏",
+            [StatusType.Deleted]             = "撍",
+            [StatusType.Ignored]             = "",
+            [StatusType.Modified]            = "",
+            [StatusType.Renamed]             = "",
+            [StatusType.TypeChanged]         = "󰉺",
+            [StatusType.Unmodified]          = " ",
+            [StatusType.Unmerged]            = "",
+            [StatusType.Untracked]           = "鑹",
+            [StatusType.External]            = "",
+
+            [StatusType.UpstreamAdded]       = "󰈞",
+            [StatusType.UpstreamCopied]      = "󰈢",
+            [StatusType.UpstreamDeleted]     = "",
+            [StatusType.UpstreamIgnored]     = " ",
+            [StatusType.UpstreamModified]    = "󰏫",
+            [StatusType.UpstreamRenamed]     = "",
+            [StatusType.UpstreamTypeChanged] = "󱧶",
+            [StatusType.UpstreamUnmodified]  = " ",
+            [StatusType.UpstreamUnmerged]    = "",
+            [StatusType.UpstreamUntracked]   = " ",
+            [StatusType.UpstreamExternal]    = "",
+        }
+    }
+
+    -- nvim_tree.setup {
+    --     view = {
+    --         adaptive_size = true
+    --     },
+    --     sync_root_with_cwd = true,
+    --     git = {
+    --         ignore = false,
+    --     },
+    -- }
 
     local header_art =
     [[

@@ -1,7 +1,6 @@
-
 local M = {}
 
-M.setup = function () 
+M.setup = function()
     local Plug = vim.fn['plug#']
 
     vim.call('plug#begin')
@@ -24,13 +23,12 @@ M.setup = function ()
     Plug 'ojroques/nvim-bufdel'
     Plug 'nvim-lua/plenary.nvim' -- dependency for telescope
     Plug 'kkharji/sqlite.lua'
-    Plug ('nvim-telescope/telescope.nvim', { tag = '0.1.4' })
-    Plug ('nvim-telescope/telescope-fzf-native.nvim', { ['do']= 'make' })
+    Plug('nvim-telescope/telescope.nvim', { tag = '0.1.6' })
+    Plug('nvim-telescope/telescope-fzf-native.nvim', { ['do'] = 'make' })
     Plug 'nvim-telescope/telescope-project.nvim'
     Plug 'nvim-telescope/telescope-smart-history.nvim'
-    Plug ('nvim-treesitter/nvim-treesitter', {['do']= ':TSUpdate'})
+    Plug('nvim-treesitter/nvim-treesitter', { ['do'] = ':TSUpdate' })
     -- Plug 'kevinhwang91/nvim-bqf', {'do': ':BqfEnable'}
-    Plug 'nvim-tree/nvim-web-devicons'
     Plug 'nvim-lualine/lualine.nvim'
     Plug 'folke/which-key.nvim'
     Plug 'https://gitlab.com/yorickpeterse/nvim-pqf'
@@ -38,16 +36,20 @@ M.setup = function ()
     Plug 'olivercederborg/poimandres.nvim'
     Plug 'altercation/vim-colors-solarized'
     Plug 'aserowy/tmux.nvim'
-    Plug 'nvim-tree/nvim-tree.lua'
+
+    -- oil and icon pack
+    Plug 'nvim-tree/nvim-web-devicons'
+    Plug 'stevearc/oil.nvim'
+    Plug 'SirZenith/oil-vcs-status'
 
     -- mason and lsp related
     Plug 'williamboman/mason.nvim'
     Plug 'williamboman/mason-lspconfig.nvim'
-    Plug 'neovim/nvim-lspconfig' --  Collection of configurations for built-in LSP client
-    Plug 'hrsh7th/nvim-cmp' --  Autocompletion plugin
-    Plug 'hrsh7th/cmp-nvim-lsp' --  LSP source for nvim-cmp
+    Plug 'neovim/nvim-lspconfig'    --  Collection of configurations for built-in LSP client
+    Plug 'hrsh7th/nvim-cmp'         --  Autocompletion plugin
+    Plug 'hrsh7th/cmp-nvim-lsp'     --  LSP source for nvim-cmp
     Plug 'saadparwaiz1/cmp_luasnip' --  Snippets source for nvim-cmp
-    Plug 'L3MON4D3/LuaSnip' --  Snippets plugin
+    Plug 'L3MON4D3/LuaSnip'         --  Snippets plugin
 
     -- copilot
     Plug 'github/copilot.vim'

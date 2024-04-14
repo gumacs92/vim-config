@@ -15,7 +15,6 @@ require 'mappings'.setup()
 require 'plugins'.setup()
 require 'autocommands'.setup()
 
-
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 -- local wk = require("which-key")
 -- wk.setup {}
@@ -43,7 +42,6 @@ local languageConfigs = {
                         {
                             name = "@vue/typescript-plugin",
                             location = vim.fn.stdpath('config') .. "/node_modules/@vue/typescript-plugin",
-                            -- location = "/home/gumacs/dev/vim-config/node_modules/@vue/typescript-plugin",
                             languages = { "javascript", "typescript", "vue" },
                         },
                     },
@@ -86,7 +84,8 @@ local languageConfigs = {
                         workspace = {
                             checkThirdParty = false,
                             library = {
-                                vim.env.VIMRUNTIME
+                                vim.env.VIMRUNTIME,
+                                vim.fn.stdpath('config') .. "/plugged",
                                 -- Depending on the usage, you might want to add additional paths here.
                                 -- "${3rd}/luv/library"
                                 -- "${3rd}/busted/library",
