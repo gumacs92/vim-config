@@ -5,12 +5,13 @@ local M = {}
 
 M.setup = function (ensure_installed)
     -- treesitter config
+    vim.g.skip_ts_context_commentstring_module = true
     treesitter.setup {
         auto_install = true,
         autotag = {
             enable = true
         },
-        context_commentstring = {
+        ts_context_commentstring = {
             enable = true,
             enable_autocmd = false,
         },
