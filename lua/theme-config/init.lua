@@ -1,16 +1,29 @@
 local lualine = require 'lualine'
 local poimandres = require('poimandres')
--- local nvim_tree = require 'nvim-tree'
 local mini_session = require('mini.sessions')
 local mini_starter = require('mini.starter')
 local oil = require("oil")
 local status_const = require "oil-vcs-status.constant.status"
+local colorizer = require 'colorizer'
 
 local StatusType = status_const.StatusType
 
 local M = {}
 
 M.setup = function()
+    colorizer.setup()
+
+    vim.api.nvim_create_autocmd("BufEnter", {
+        pattern = "*",
+        callback = function()
+            vim.cmd('ColorizerAttachToBuffer')
+        end
+    })
+
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = "*",
+        command = "setlocal shiftwidth=4 tabstop=4 expandtab"
+    })
     poimandres.setup {
         bold_vert_split = true,           -- use bold vertical separators
         dim_nc_background = true,         -- dim 'non-current' window backgrounds
@@ -31,12 +44,30 @@ M.setup = function()
     vim.api.nvim_set_hl(0, 'SneakScope', { fg = 'red', bg = 'yellow', ctermfg = 'red', ctermbg = 'yellow' })
 
 
+
     vim.cmd('colorscheme poimandres')
+
+    -- vim.opt.termguicolors = true
+    -- if vim.fn.has('nvim') then
+    --     -- https://github.com/neovim/neovim/wiki/FAQ
+    --     vim.opt.guicursor = "n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor"
+    -- end
+    -- vim.cmd('colorscheme Atelier_SulphurpoolDark')
+    --
     lualine.setup {
         options = {
-            theme = 'poimandres'
+            theme = 'poimandres',
+        },
+        sections = {
+            lualine_a = { 'mode' },
+            lualine_b = { 'diff', 'diagnostics' },
+            lualine_c = { 'vim.fn.expand("%:~:.")' },
+            lualine_x = { 'encoding', 'fileformat', 'filetype' },
+            lualine_y = { 'progress' },
+            lualine_z = { 'location' }
         },
     }
+
     oil.setup {
         win_options = {
             signcolumn = "yes:2",
@@ -72,17 +103,17 @@ M.setup = function()
             svn = "svn",
         },
         status_symbol = {
-            [StatusType.Added]               = "",
-            [StatusType.Copied]              = "󰆏",
-            [StatusType.Deleted]             = "撍",
+            [StatusType.Added]               = "",
+            [StatusType.Copied]              = "󰈢",
+            [StatusType.Deleted]             = "󰗨",
             [StatusType.Ignored]             = "",
-            [StatusType.Modified]            = "",
+            [StatusType.Modified]            = "",
             [StatusType.Renamed]             = "",
             [StatusType.TypeChanged]         = "󰉺",
             [StatusType.Unmodified]          = " ",
-            [StatusType.Unmerged]            = "",
-            [StatusType.Untracked]           = "鑹",
-            [StatusType.External]            = "",
+            [StatusType.Unmerged]            = "",
+            [StatusType.Untracked]           = "",
+            [StatusType.External]            = "",
 
             [StatusType.UpstreamAdded]       = "󰈞",
             [StatusType.UpstreamCopied]      = "󰈢",
@@ -95,18 +126,41 @@ M.setup = function()
             [StatusType.UpstreamUnmerged]    = "",
             [StatusType.UpstreamUntracked]   = " ",
             [StatusType.UpstreamExternal]    = "",
-        }
+        },
+        status_priority = {
+            [StatusType.UpstreamIgnored]     = 0,
+            [StatusType.UpstreamUntracked]   = 1,
+            [StatusType.UpstreamUnmodified]  = 2,
+
+            [StatusType.UpstreamCopied]      = 3,
+            [StatusType.UpstreamRenamed]     = 3,
+            [StatusType.UpstreamTypeChanged] = 3,
+
+            [StatusType.UpstreamDeleted]     = 4,
+            [StatusType.UpstreamModified]    = 4,
+            [StatusType.UpstreamAdded]       = 4,
+
+            [StatusType.UpstreamUnmerged]    = 5,
+
+            [StatusType.Ignored]             = 10,
+            [StatusType.Untracked]           = 11,
+            [StatusType.Unmodified]          = 12,
+
+            [StatusType.Copied]              = 13,
+            [StatusType.Renamed]             = 13,
+            [StatusType.TypeChanged]         = 13,
+
+            [StatusType.Deleted]             = 14,
+            [StatusType.Modified]            = 14,
+            [StatusType.Added]               = 14,
+
+            [StatusType.Unmerged]            = 15,
+        },
     }
 
-    -- nvim_tree.setup {
-    --     view = {
-    --         adaptive_size = true
-    --     },
-    --     sync_root_with_cwd = true,
-    --     git = {
-    --         ignore = false,
-    --     },
-    -- }
+    vim.api.nvim_set_hl(0, 'OilVcsStatusModified', { fg = '#FBF6D9' })
+    vim.api.nvim_set_hl(0, 'OilVcsStatusAdded', { fg = '#89C35C' })
+    vim.api.nvim_set_hl(0, 'OilVcsStatusUntracked', { fg = '#FFB8BF' })
 
     local header_art =
     [[

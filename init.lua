@@ -9,6 +9,7 @@ function _G.ReloadConfig()
     vim.notify("Nvim configuration reloaded!", vim.log.levels.INFO)
 end
 
+
 vim.api.nvim_set_keymap("n", "<leader><leader><CR>", '<cmd>lua ReloadConfig()<CR>', { noremap = true, silent = true })
 
 require 'mappings'.setup()
@@ -179,6 +180,45 @@ vim.opt.hlsearch = true
 vim.opt.showmatch = true
 vim.opt.smartindent = true
 vim.opt.clipboard = "unnamedplus"
+-- vim.opt.clipboard = {
+--     name = 'WslClipboard',
+--     copy = {
+--         ['+'] = 'xsel --nodetach -ib',
+--         ['*'] = 'xsel --nodetach -ip',
+--     },
+--     paste = {
+--         ['+'] = 'xsel -ob',
+--         ['*'] = 'xsel -op',
+--     },
+--     cache_enabled = 0,
+-- }
+-- vim.cmd([[set clipboard+=unnamedplus]])
+--
+--
+--
+if vim.fn.has("wsl") == 1 then
+    if vim.fn.executable("wl-copy") == 0 then
+        print("wl-copy not found, clipboard integration won't work")
+    else
+        vim.g.clipboard = {
+            name = "wl-clipboard (wsl)",
+            copy = {
+                ["+"] = 'wl-copy --foreground --type text/plain',
+                ["*"] = 'wl-copy --foreground --primary --type text/plaing'
+            },
+            paste = {
+                ["+"] = (function()
+                    return vim.fn.systemlist('wl-paste --no-newline|sed -e "s/\r$//"', { '' }, 1) -- '1' keeps empty lines
+                end),
+                ["*"] = (function()
+                    return vim.fn.systemlist('wl-paste --primary --no-newline|sed -e "s/\r$//"', { '' }, 1)
+                end)
+            },
+            cache_enabled = true
+        }
+    end
+end
+
 -- vim.opt.winhighlight = "Normal:ActiveWindow,NormalNC:InactiveWindow "
 
 -- " set autoindent

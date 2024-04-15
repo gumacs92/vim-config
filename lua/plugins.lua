@@ -18,6 +18,7 @@ M.setup = function()
     Plug 'justinmk/vim-sneak'
     Plug 'windwp/nvim-ts-autotag'
     Plug 'windwp/nvim-autopairs'
+    Plug 'norcalli/nvim-colorizer.lua'
     -- buffer related
     Plug 'moll/vim-bbye'
     Plug 'ojroques/nvim-bufdel'
@@ -35,6 +36,7 @@ M.setup = function()
     Plug 'https://github.com/stefandtw/quickfix-reflector.vim'
     Plug 'olivercederborg/poimandres.nvim'
     Plug 'altercation/vim-colors-solarized'
+    Plug 'atelierbram/vim-colors_atelier-schemes'
     Plug 'aserowy/tmux.nvim'
 
     -- oil and icon pack
