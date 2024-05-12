@@ -49,9 +49,7 @@ vim.api.nvim_create_autocmd("FileType", {
 --   autocmd!
 --   autocmd BufWritePost * lua formatCode() 
 -- augroup END
---
--- autocmd DirChanged * silent! Prosession
---
+    --
 vim.api.nvim_create_autocmd("TextYankPost", {
     pattern = "*",
     command = "silent! lua vim.highlight.on_yank()"

@@ -21,6 +21,9 @@ const te = computed(() => {
 });
 
 const test9 = () => {
+    if(true){
+        console.log("test9");
+    }
   console.log("test9");
 };
 
@@ -42,4 +45,8 @@ const adder = (a: number, b: number) => {
 const multiplier = (a: number, b: number) => {
   return a * b;
 };
+
+onMounted(() => {
+    multiplier(2, 3);
+})
 </script>

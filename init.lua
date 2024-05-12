@@ -1,19 +1,24 @@
-function _G.ReloadConfig()
-    for name, _ in pairs(package.loaded) do
-        if name:match('^user') and not name:match('nvim-tree') then
-            package.loaded[name] = nil
-        end
-    end
-
-    dofile(vim.env.MYVIMRC)
-    vim.notify("Nvim configuration reloaded!", vim.log.levels.INFO)
+---------------------------------------------------------------------------
+-- lazy.nvim base config
+---------------------------------------------------------------------------
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
 end
+vim.opt.rtp:prepend(lazypath)
 
+require("lazy").setup('plugins')
+---------------------------------------------------------------------------
 
-vim.api.nvim_set_keymap("n", "<leader><leader><CR>", '<cmd>lua ReloadConfig()<CR>', { noremap = true, silent = true })
 
 require 'mappings'.setup()
-require 'plugins'.setup()
 require 'autocommands'.setup()
 
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -21,9 +26,6 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 -- wk.setup {}
 --
 --
-
--- resourece configuraion
-vim.api.nvim_set_keymap("n", "<leader><leader><CR>", '<cmd>lua ReloadConfig()<CR>', { noremap = true, silent = true })
 
 _G.formatCode = function()
     vim.lsp.buf.format({
@@ -42,8 +44,8 @@ local languageConfigs = {
                     plugins = {
                         {
                             name = "@vue/typescript-plugin",
-                            location = vim.fn.stdpath('config') .. "/node_modules/@vue/typescript-plugin",
                             languages = { "javascript", "typescript", "vue" },
+                            location = vim.fn.stdpath('config') .. "/node_modules/@vue/typescript-plugin",
                         },
                     },
                 },
@@ -51,6 +53,8 @@ local languageConfigs = {
                     "javascript",
                     "typescript",
                     "vue",
+                    "typescriptreact",
+                    "javascriptreact",
                 },
             },
             "eslint"
@@ -173,29 +177,15 @@ for lang, config in pairs(languageConfigs) do
     table.insert(treesitterConfig, lang)
 end
 
--- let g:copilot_no_tab_map = v:true
+-- -- let g:copilot_no_tab_map = v:true
+vim.g.copilot_node_command = "~/.nvm/versions/node/v18.12.1/bin/node"
 vim.g.copilot_no_tab_map = true
 vim.opt.ignorecase = true
 vim.opt.hlsearch = true
 vim.opt.showmatch = true
 vim.opt.smartindent = true
 vim.opt.clipboard = "unnamedplus"
--- vim.opt.clipboard = {
---     name = 'WslClipboard',
---     copy = {
---         ['+'] = 'xsel --nodetach -ib',
---         ['*'] = 'xsel --nodetach -ip',
---     },
---     paste = {
---         ['+'] = 'xsel -ob',
---         ['*'] = 'xsel -op',
---     },
---     cache_enabled = 0,
--- }
--- vim.cmd([[set clipboard+=unnamedplus]])
---
---
---
+
 if vim.fn.has("wsl") == 1 then
     if vim.fn.executable("wl-copy") == 0 then
         print("wl-copy not found, clipboard integration won't work")
@@ -238,7 +228,9 @@ vim.opt.encoding = "utf-8"
 
 vim.opt.list = true
 vim.opt.swapfile = false
+
 -- vim.opt.listchars:append "space:⋅"
+
 vim.opt.listchars:append "eol:↴"
 -- require("indent_blankline").setup {
 --     space_char_blankline = " ",
@@ -246,6 +238,7 @@ vim.opt.listchars:append "eol:↴"
 --     -- show_current_context_start = false,
 -- }
 
+vim.g.wildfire_objects = { "i'", "a'", 'i"', 'a"', "i)", "a)", "i]", "a]", "i}", "a}", "it", "at" }
 
 require 'neovide-config/init'.setup()
 require 'theme-config/init'.setup()
@@ -256,6 +249,24 @@ require "autocomplete-config/init".setup()
 require "mason".setup() -- This is the main plugin that allow us to install and configure language servers and formatters
 require 'lsp-config/init'.setup(ensureInstalledLsps, lspConfig, capabilities)
 require 'null-ls-config/init'.setup(nullLsconfig)
+require 'git-config/init'.setup()
 require 'dap-config/init'.setup(dapConfig)
+
+
+
+local oil = require("oil")
+vim.api.nvim_create_autocmd("VimEnter", {
+    pattern = "*",
+    callback = function()
+        vim.api.nvim_set_keymap('n', '<CR>', '', { noremap = true, silent = true })
+        vim.keymap.set("n", "<CR>", function()
+            if vim.bo.filetype == "oil" then
+                oil.select()
+            else
+                vim.cmd(":normal <Plug>(wildfire-fuel)")
+            end
+        end, { desc = "Map enter for oil and plug", noremap = true })
+    end
+})
 
 print "Sourced init.lua"

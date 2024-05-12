@@ -5,6 +5,7 @@ local mini_starter = require('mini.starter')
 local oil = require("oil")
 local status_const = require "oil-vcs-status.constant.status"
 local colorizer = require 'colorizer'
+local scrollbar = require 'scrollbar'
 
 local StatusType = status_const.StatusType
 
@@ -158,6 +159,8 @@ M.setup = function()
         },
     }
 
+
+
     vim.api.nvim_set_hl(0, 'OilVcsStatusModified', { fg = '#FBF6D9' })
     vim.api.nvim_set_hl(0, 'OilVcsStatusAdded', { fg = '#89C35C' })
     vim.api.nvim_set_hl(0, 'OilVcsStatusUntracked', { fg = '#FFB8BF' })
@@ -204,6 +207,8 @@ M.setup = function()
         header = header_art,
         footer = '',
     })
+
+    scrollbar.setup()
 end
 
 return M
