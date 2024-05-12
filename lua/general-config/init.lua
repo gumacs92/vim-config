@@ -5,6 +5,8 @@ local nvim_autopairs = require "nvim-autopairs"
 local comment = require "Comment"
 local commentstring = require 'ts_context_commentstring.integrations.comment_nvim'
 local bufdel = require 'bufdel'
+-- local leap = require 'leap'
+local flit = require 'flit'
 
 local M = {}
 
@@ -128,7 +130,7 @@ M.setup = function()
     -- Setting up Keybindings for lua configured plugins
     vim.api.nvim_set_keymap("n", "<leader>eo", ":NvimTreeFocus<CR>", { noremap = true })
     vim.api.nvim_set_keymap("n", "<leader>ef", ":NvimTreeFindFile<CR>", { noremap = true })
-    vim.api.nvim_set_keymap('n', '<leader>p' ,
+    vim.api.nvim_set_keymap('n', '<leader>p',
         ":lua  require'telescope'.extensions.project.project { display_type = 'full' }<CR>",
         { noremap = true, silent = true })
     -- vim.api.nvim_set_keymap( 'n', '<leader>s', ":lua require('session-lens').search_session()<CR>", {noremap = true, silent = true})
@@ -153,6 +155,12 @@ M.setup = function()
     -- }
 
     vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
+    vim.keymap.set('n', 's', '<Plug>(leap)')
+    vim.keymap.set('n', 'S', '<Plug>(leap-from-window)')
+    vim.keymap.set({ 'x', 'o' }, 's', '<Plug>(leap-forward)')
+    vim.keymap.set({ 'x', 'o' }, 'S', '<Plug>(leap-backward)')
+    flit.setup()
 end
 
 return M

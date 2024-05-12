@@ -11,7 +11,9 @@ return {
     'lukas-reineke/indent-blankline.nvim',
     'wellle/targets.vim',
     'machakann/vim-sandwich',
-    'justinmk/vim-sneak',
+    -- 'justinmk/vim-sneak',
+    'ggandor/leap.nvim',
+    'ggandor/flit.nvim',
     'windwp/nvim-ts-autotag',
     'windwp/nvim-autopairs',
     -- 'gcmt/wildfire.vim'

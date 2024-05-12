@@ -5,7 +5,7 @@ local mini_starter = require('mini.starter')
 local oil = require("oil")
 local status_const = require "oil-vcs-status.constant.status"
 local colorizer = require 'colorizer'
-local scrollbar = require 'scrollbar'
+local scrollbar = require'scrollbar'
 
 local StatusType = status_const.StatusType
 
@@ -41,8 +41,8 @@ M.setup = function()
     -- " TODO replace magent with somtehing more styliest
     vim.api.nvim_set_hl(0, 'ActiveWindow', { bg = '#21242b' })
     vim.api.nvim_set_hl(0, 'InactiveWindow', { bg = '#282C34' })
-    vim.api.nvim_set_hl(0, 'Sneak', { fg = 'black', bg = 'red', ctermfg = 'black', ctermbg = 'red' })
-    vim.api.nvim_set_hl(0, 'SneakScope', { fg = 'red', bg = 'yellow', ctermfg = 'red', ctermbg = 'yellow' })
+    -- vim.api.nvim_set_hl(0, 'Sneak', { fg = 'black', bg = 'red', ctermfg = 'black', ctermbg = 'red' })
+    -- vim.api.nvim_set_hl(0, 'SneakScope', { fg = 'red', bg = 'yellow', ctermfg = 'red', ctermbg = 'yellow' })
 
 
 
@@ -209,6 +209,7 @@ M.setup = function()
     })
 
     scrollbar.setup()
+
 end
 
 return M

@@ -1,4 +1,5 @@
 local gitsigns = require('gitsigns')
+local scrollbarGitsignsHandler = require("scrollbar.handlers.gitsigns")
 
 local M = {}
 
@@ -50,6 +51,8 @@ M.setup = function()
             map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
         end
     }
+
+    scrollbarGitsignsHandler.setup()
 end
 
 return M

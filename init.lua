@@ -252,8 +252,6 @@ require 'null-ls-config/init'.setup(nullLsconfig)
 require 'git-config/init'.setup()
 require 'dap-config/init'.setup(dapConfig)
 
-
-
 local oil = require("oil")
 vim.api.nvim_create_autocmd("VimEnter", {
     pattern = "*",

@@ -37,10 +37,10 @@ M.setup = function()
     vim.keymap.set("n", "<leader>fb", ':Telescope buffers<CR>', { noremap = true, silent = true })
     vim.keymap.set("n", "<leader>fh", ':Telescope help_tags<CR>F', { noremap = true, silent = true })
 
-    vim.keymap.set("n", "f", "<Plug>Sneak_f", { noremap = true, silent = true })
-    vim.keymap.set("n", "F", "<Plug>Sneak_F", { noremap = true, silent = true })
-    vim.keymap.set("n", "t", "<Plug>Sneak_t", { noremap = true, silent = true })
-    vim.keymap.set("n", "T", "<Plug>Sneak_T", { noremap = true, silent = true })
+    -- vim.keymap.set("n", "f", "<Plug>Sneak_f", { noremap = true, silent = true })
+    -- vim.keymap.set("n", "F", "<Plug>Sneak_F", { noremap = true, silent = true })
+    -- vim.keymap.set("n", "t", "<Plug>Sneak_t", { noremap = true, silent = true })
+    -- vim.keymap.set("n", "T", "<Plug>Sneak_T", { noremap = true, silent = true })
 
     vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 end
