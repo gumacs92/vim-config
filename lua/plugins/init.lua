@@ -1,7 +1,7 @@
 return {
     'tpope/vim-abolish',
-    'tpope/vim-sensible',
     'tpope/vim-repeat',
+    'tpope/vim-sensible',
     {
         'dhruvasagar/vim-prosession',
         dependencies = { 'tpope/vim-obsession' }
@@ -9,11 +9,26 @@ return {
     'JoosepAlviste/nvim-ts-context-commentstring',
     'numToStr/Comment.nvim',
     'lukas-reineke/indent-blankline.nvim',
+    'andymass/vim-matchup',
     'wellle/targets.vim',
     'machakann/vim-sandwich',
+'Wansmer/sibling-swap.nvim',
     -- 'justinmk/vim-sneak',
-    'ggandor/leap.nvim',
-    'ggandor/flit.nvim',
+    { 'echasnovski/mini.jump',                    version = '*' },
+    {
+        "folke/flash.nvim",
+        event = "VeryLazy",
+        ---@type Flash.Config
+        opts = {},
+        -- stylua: ignore
+        keys = {
+            { "s",     mode = { "n", "o", "x" }, function() require("flash").jump() end,              desc = "Flash" },
+            { "S",     mode = { "n", "o" },      function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
+            { "r",     mode = "o",               function() require("flash").remote() end,            desc = "Remote Flash" },
+            { "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+            { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
+        },
+    },
     'windwp/nvim-ts-autotag',
     'windwp/nvim-autopairs',
     -- 'gcmt/wildfire.vim'
@@ -30,7 +45,7 @@ return {
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
     'nvim-telescope/telescope-project.nvim',
     'nvim-telescope/telescope-smart-history.nvim',
-    { 'nvim-treesitter/nvim-treesitter',          build = ':TSUpdate' },
+    { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
     'tree-sitter-grammars/tree-sitter-markdown', -- tree-sitter grammar for markdown_inline for Lspsaga
     -- 'kevinhwang91/nvim-bqf', {'do': ':BqfEnable'}
     'nvim-lualine/lualine.nvim',
@@ -40,7 +55,7 @@ return {
     'olivercederborg/poimandres.nvim',
     'altercation/vim-colors-solarized',
     'atelierbram/vim-colors_atelier-schemes',
-    'aserowy/tmux.nvim',
+    -- 'aserowy/tmux.nvim',
 
 
     -- oil and icon pack
@@ -48,14 +63,16 @@ return {
     'stevearc/oil.nvim',
     'SirZenith/oil-vcs-status',
 
-    -- mason and lsp related
+    -- mason and lsp and completion
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
     'neovim/nvim-lspconfig',    --  Collection of configurations for built-in LSP client
     'hrsh7th/nvim-cmp',         --  Autocompletion plugin
     'hrsh7th/cmp-nvim-lsp',     --  LSP source for nvim-cmp
-    'saadparwaiz1/cmp_luasnip', --  Snippets source for nvim-cmp
-    'L3MON4D3/LuaSnip',         --  Snippets plugin
+    'onsails/lspkind.nvim',      --  Better icons for LSP completion items
+
+        'hrsh7th/cmp-vsnip',
+        'hrsh7th/vim-vsnip',
     {
         'nvimdev/lspsaga.nvim',
         config = function()

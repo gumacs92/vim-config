@@ -1,12 +1,10 @@
 local telescope = require "telescope"
 local pqf = require "pqf" -- prettier quickfix list
-local tmux = require "tmux"
+-- local tmux = require "tmux"
 local nvim_autopairs = require "nvim-autopairs"
 local comment = require "Comment"
 local commentstring = require 'ts_context_commentstring.integrations.comment_nvim'
 local bufdel = require 'bufdel'
--- local leap = require 'leap'
-local flit = require 'flit'
 
 local M = {}
 
@@ -15,17 +13,16 @@ M.setup = function()
 
     vim.g['loaded_netrw'] = 1
     vim.g['loaded_netrwPlugin'] = 1
-    vim.opt.termguicolors = true
 
     nvim_autopairs.setup()
-    tmux.setup()
+    -- tmux.setup()
 
     -- Vim quickfix reflector config
     vim.g.qf_modifiable = 1
     vim.g.qf_join_changes = 1
     vim.g.qf_write_changes = 1
 
-    -- Prettier quick fix list setup
+    -- Prettier quick fix list setupkkj
     pqf.setup()
 
     -- numtoStr/Comment setup
@@ -139,7 +136,6 @@ M.setup = function()
     vim.api.nvim_set_keymap('n', '<leader>ff', ":Telescope live_grep find_command=rg<CR>",
         { noremap = true, silent = true })
 
-
     -- autosession.setup {
     --     -- auto_session_enable_last_session = true,
     --     -- log_level = 'debug',
@@ -155,12 +151,6 @@ M.setup = function()
     -- }
 
     vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
-
-    vim.keymap.set('n', 's', '<Plug>(leap)')
-    vim.keymap.set('n', 'S', '<Plug>(leap-from-window)')
-    vim.keymap.set({ 'x', 'o' }, 's', '<Plug>(leap-forward)')
-    vim.keymap.set({ 'x', 'o' }, 'S', '<Plug>(leap-backward)')
-    flit.setup()
 end
 
 return M

@@ -1,7 +1,7 @@
 <template>
-  <h1>test hello</h1>
+  <h1 class="asd" @click="test10">test hello</h1>
 
-  <div>h ello</div>
+    <div>h ello</div>
 </template>
 <script lang="ts" setup>
 definePageMeta({});
@@ -13,6 +13,17 @@ if(true){
 } else {
 // asdfasdf
 }
+
+const test = [
+    {
+        age: 11,
+        name: "test",
+    },
+    {
+        name: "test",
+        age: 12,
+    },
+]
 
 const tes = ref(false);
 

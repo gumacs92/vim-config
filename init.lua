@@ -17,7 +17,6 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup('plugins')
 ---------------------------------------------------------------------------
 
-
 require 'mappings'.setup()
 require 'autocommands'.setup()
 
@@ -180,11 +179,13 @@ end
 -- -- let g:copilot_no_tab_map = v:true
 vim.g.copilot_node_command = "~/.nvm/versions/node/v18.12.1/bin/node"
 vim.g.copilot_no_tab_map = true
-vim.opt.ignorecase = true
+vim.opt.ignorecase = false
+vim.opt.smartcase = true
 vim.opt.hlsearch = true
 vim.opt.showmatch = true
 vim.opt.smartindent = true
 vim.opt.clipboard = "unnamedplus"
+vim.opt.termguicolors = true
 
 if vim.fn.has("wsl") == 1 then
     if vim.fn.executable("wl-copy") == 0 then
