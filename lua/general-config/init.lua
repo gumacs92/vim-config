@@ -1,29 +1,21 @@
 local telescope = require "telescope"
-local pqf = require "pqf" -- prettier quickfix list
--- local tmux = require "tmux"
 local nvim_autopairs = require "nvim-autopairs"
 local comment = require "Comment"
 local commentstring = require 'ts_context_commentstring.integrations.comment_nvim'
 local bufdel = require 'bufdel'
+local ufo = require 'ufo'
+require "telescope._extensions.prosession"
 
 local M = {}
 
 M.setup = function()
+    vim.opt.switchbuf = "useopen"
     vim.g.prosession_dir = '~/.local/state/nvim/sessions'
 
     vim.g['loaded_netrw'] = 1
     vim.g['loaded_netrwPlugin'] = 1
 
     nvim_autopairs.setup()
-    -- tmux.setup()
-
-    -- Vim quickfix reflector config
-    vim.g.qf_modifiable = 1
-    vim.g.qf_join_changes = 1
-    vim.g.qf_write_changes = 1
-
-    -- Prettier quick fix list setupkkj
-    pqf.setup()
 
     -- numtoStr/Comment setup
     comment.setup {
@@ -82,6 +74,7 @@ M.setup = function()
     -- end
 
     -- Configuring Telescope plugin
+
     telescope.setup {
         defaults = {
             preview_cutoff = 200,
@@ -100,6 +93,14 @@ M.setup = function()
             -- }
         },
         extensions = {
+            prosession = {
+                path_display = { 'tail' },
+                layout_config = {
+                    width = 0.3,
+                    height = 0.3,
+                    -- other layout settings
+                }
+            },
             project = {
                 base_dirs = {
                     { '/home/gumacs/dev', max_depth = 1 }
@@ -123,32 +124,16 @@ M.setup = function()
     -- telescope.load_extension('smart_history')
     telescope.load_extension('fzf')
     telescope.load_extension('project')
+    telescope.load_extension('prosession') -- proession telescope extension is manually overriden by me
 
     -- Setting up Keybindings for lua configured plugins
     vim.api.nvim_set_keymap("n", "<leader>eo", ":NvimTreeFocus<CR>", { noremap = true })
     vim.api.nvim_set_keymap("n", "<leader>ef", ":NvimTreeFindFile<CR>", { noremap = true })
-    vim.api.nvim_set_keymap('n', '<leader>p',
-        ":lua  require'telescope'.extensions.project.project { display_type = 'full' }<CR>",
-        { noremap = true, silent = true })
-    -- vim.api.nvim_set_keymap( 'n', '<leader>s', ":lua require('session-lens').search_session()<CR>", {noremap = true, silent = true})
+    vim.api.nvim_set_keymap('n', '<leader>p', '<cmd>Telescope prosession<CR>', { noremap = true, silent = true })
     vim.api.nvim_set_keymap('n', '<C-p>', ":lua require'telescope.builtin'.find_files({find_command=rg})<CR>",
         { noremap = true, silent = true })
     vim.api.nvim_set_keymap('n', '<leader>ff', ":Telescope live_grep find_command=rg<CR>",
         { noremap = true, silent = true })
-
-    -- autosession.setup {
-    --     -- auto_session_enable_last_session = true,
-    --     -- log_level = 'debug',
-    --     -- auto_save_enabled = true,
-    --     -- auto_restore_enabled = true,
-    --     auto_session_allowed_dirs = { '/home/gumacs/dev/*' },
-    --     cwd_change_handling = {
-    --         restore_upcoming_session = true,
-    --         post_cwd_changed_hook = function ()
-    --                 lualine.refresh()
-    --         end
-    --     }
-    -- }
 
     vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 end

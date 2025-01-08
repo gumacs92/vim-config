@@ -20,6 +20,7 @@ require("lazy").setup('plugins')
 require 'mappings'.setup()
 require 'autocommands'.setup()
 
+
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 -- local wk = require("which-key")
 -- wk.setup {}
@@ -30,15 +31,24 @@ _G.formatCode = function()
     vim.lsp.buf.format({
         timeout_ms = 15000,
         filter = function(client)
-            return client.name ~= "tsserver" and client.name ~= "volar"
+            return client.name ~= "ts_ls" and client.name ~= "volar"
         end
     })
 end
 
+local function get_plugins()
+    local plugins = {}
+    for _, plugin in ipairs(vim.fn.globpath(vim.fn.stdpath("data") .. "/lazy", '*', 1, 1)) do
+        table.insert(plugins, plugin)
+    end
+    return plugins
+end
+
+
 local languageConfigs = {
     typescript = {
         lsp = {
-            tsserver = {
+            ts_ls = {
                 init_options = {
                     plugins = {
                         {
@@ -55,16 +65,27 @@ local languageConfigs = {
                     "typescriptreact",
                     "javascriptreact",
                 },
+                on_attach = function(client, bufnr)
+                    local tsUtils = require('nvim-lsp-ts-utils')
+
+                    tsUtils.setup {
+                        -- options
+                        auto_inlay_hints = true,
+                        inlay_hints_highlight = "Comment",
+                        enable_import_on_completion = true,
+                    }
+
+                    tsUtils.setup_client(client)
+                end
             },
-            "eslint"
         },
-        --     linters = { "eslint" },
-        --     formatters = { "prettierd" },
+        linters = { "eslint_d" },
+        formatters = { "prettierd" },
         --     -- dap = { "node2" }
     },
     json = {
         lsp = { "jsonls" },
-        formatters = { "prettier" }
+        formatters = { "prettierd" }
     },
     vim = {
         lsp = { "vimls" }
@@ -72,42 +93,36 @@ local languageConfigs = {
     lua = {
         lsp = {
             lua_ls = {
-                on_init = function(client)
-                    local path = client.workspace_folders[1].name
-                    if vim.loop.fs_stat(path .. '/.luarc.json') or vim.loop.fs_stat(path .. '/.luarc.jsonc') then
-                        return
-                    end
-
-                    client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+                settings = {
+                    Lua = {
                         runtime = {
-                            -- Tell the language server which version of Lua you're using
-                            -- (most likely LuaJIT in the case of Neovim)
                             version = 'LuaJIT'
                         },
-                        -- Make the server aware of Neovim runtime files
+                        diagnostics = {
+                            globals = { 'vim' },
+                        },
                         workspace = {
-                            checkThirdParty = false,
+                            maxPreload = 2000,
+                            preloadFileSize = 1000,
                             library = {
                                 vim.env.VIMRUNTIME,
-                                vim.fn.stdpath('config') .. "/plugged",
-                                -- Depending on the usage, you might want to add additional paths here.
-                                -- "${3rd}/luv/library"
-                                -- "${3rd}/busted/library",
                             }
-                            -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
-                            -- library = vim.api.nvim_get_runtime_file("", true)
                         }
-                    })
-                end,
-                settings = {
-                    Lua = {}
+                    }
                 }
             }
         }
     },
     vue = {
-        lsp = { "volar" },
-        formatters = { "prettier" },
+        lsp = {
+            volar = {
+                codeAction = {
+                    enable = true,
+                    kinds = { "quickfix", "source.organizeImports" }
+                },
+            }
+        },
+        formatters = { "prettierd" },
     },
     svelte = {
         lsp = { "svelte" }
@@ -123,7 +138,7 @@ local languageConfigs = {
     },
     css = {
         lsp = { 'cssls', 'tailwindcss' },
-        formatters = { "prettier" },
+        formatters = { "prettierd" },
     },
     java = {
         lsp = { "jdtls" }
@@ -133,10 +148,20 @@ local languageConfigs = {
     }
 }
 
+for _, plugin_path in ipairs(get_plugins()) do
+    table.insert(languageConfigs.lua.lsp.lua_ls.settings.Lua.workspace.library, plugin_path)
+end
+
 capabilities = {
     workspace = {
         didChangeWatchedFiles = {
             ddynamicRegistration = true
+        }
+    },
+    textDocument = {
+        foldingRange = {
+            dynamicRegistration = false,
+            lineFoldingOnly = true
         }
     }
 }
@@ -179,13 +204,19 @@ end
 -- -- let g:copilot_no_tab_map = v:true
 vim.g.copilot_node_command = "~/.nvm/versions/node/v18.12.1/bin/node"
 vim.g.copilot_no_tab_map = true
-vim.opt.ignorecase = false
+vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.hlsearch = true
 vim.opt.showmatch = true
 vim.opt.smartindent = true
 vim.opt.clipboard = "unnamedplus"
 vim.opt.termguicolors = true
+
+vim.opt.foldcolumn = '1' -- '0' is not bad
+vim.opt.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
+vim.opt.foldlevelstart = 99
+vim.opt.foldenable = true
+vim.opt.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 
 if vim.fn.has("wsl") == 1 then
     if vim.fn.executable("wl-copy") == 0 then
@@ -232,14 +263,9 @@ vim.opt.swapfile = false
 
 -- vim.opt.listchars:append "space:⋅"
 
-vim.opt.listchars:append "eol:↴"
--- require("indent_blankline").setup {
---     space_char_blankline = " ",
---     show_current_context = true,
---     -- show_current_context_start = false,
--- }
+-- vim.opt.listchars:append "eol:↴"
 
-vim.g.wildfire_objects = { "i'", "a'", 'i"', 'a"', "i)", "a)", "i]", "a]", "i}", "a}", "it", "at" }
+-- vim.g.wildfire_objects = { "i'", "a'", 'i"', 'a"', "i)", "a)", "i]", "a]", "i}", "a}", "it", "at" }
 
 require 'neovide-config/init'.setup()
 require 'theme-config/init'.setup()

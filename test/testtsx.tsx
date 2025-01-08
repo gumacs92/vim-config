@@ -2,6 +2,8 @@
 let hello = true
 
 function test() {
+
+
           if(true){
   } else if(false) {
 // sadfasdf
@@ -15,38 +17,4 @@ function test() {
       hello
     </div>
   )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

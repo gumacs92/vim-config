@@ -4,8 +4,8 @@ local M = {}
 M.setup = function()
     -- if vim.g.neovide then
     -- fonts must be installed inside windows
-    vim.o.guifont = 'MonaspiceAr NFP:h12:w0'
-    vim.o.linespace = 2
+    vim.o.guifont = 'FiraCode NF Retina:h16:w0'
+    vim.o.linespace = 3
 
     vim.g.neovide_padding_top = 20
     vim.g.neovide_padding_bottom = 20
@@ -30,7 +30,7 @@ M.setup = function()
     vim.g.neovide_cursor_vfx_mode = "sonicboom"
     vim.g.neovide_cursor_animate_in_insert_mode = true
 
-    vim.g.neovide_scale_factor = 0.8
+    vim.g.neovide_scale_factor = 0.7
     local change_scale_factor = function(delta)
         vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + delta
     end
@@ -38,5 +38,6 @@ M.setup = function()
     vim.keymap.set('n', '<C-->', function() change_scale_factor(-0.1) end)
     -- end
 end
+
 
 return M

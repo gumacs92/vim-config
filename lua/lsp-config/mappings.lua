@@ -1,7 +1,9 @@
+local ufo = require('ufo')
+
 local M = {}
 
 M.setup = function()
-    print("Setting up mappings for LSP")
+    -- print("Setting up mappings for LSP")
     -- Mappings.
     -- See `:help vim.diagnostic.*` for documentation on any of the below functions
     local opts = { noremap = true, silent = true }
@@ -27,9 +29,9 @@ M.setup = function()
         vim.keymap.set('n', 'gpd', '<cmd>Lspsaga peek_definition<cr>', bufopts)
         vim.keymap.set('n', 'gtd', '<cmd>Lspsaga goto_type_definition<cr>', bufopts)
         vim.keymap.set('n', 'gptd', '<cmd>Lspsaga peek_type_definition<cr>', bufopts)
-        vim.keymap.set('n', 'Y', '<cmd>Lspsaga hover_doc<cr>', bufopts)
+        -- vim.keymap.set('n', 'K', '<cmd>Lspsaga hover_doc<cr>', bufopts)
         vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-        vim.keymap.set('n', '<C-y>', vim.lsp.buf.signature_help, bufopts)
+        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
         vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
         vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
         vim.keymap.set('n', '<space>wl', function()
@@ -41,7 +43,20 @@ M.setup = function()
         -- vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
     end
 
-    print("Mappings for LSP setup")
+
+    vim.keymap.set('n', 'zR', ufo.openAllFolds)
+    vim.keymap.set('n', 'zM', ufo.closeAllFolds)
+    vim.keymap.set('n', 'zr', ufo.openFoldsExceptKinds)
+    vim.keymap.set('n', 'zm', ufo.closeFoldsWith) -- closeAllFolds == closeFoldsWith(0)
+    -- vim.keymap.set('n', 'K', function()
+    --     local winid = ufo.peekFoldedLinesUnderCursor()
+    --     if not winid then
+    --         -- choose one of coc.nvim and nvim lsp
+    --         vim.cmd([[LSPsaga hover_doc]])
+    --     end
+    -- end)
+
+    -- print("Mappings for LSP setup")
 
     return on_attach
 end

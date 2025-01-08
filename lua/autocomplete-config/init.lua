@@ -1,5 +1,5 @@
 local utils = require('utils')
--- local luasnip = require 'luasnip'
+local luasnip = require 'luasnip'
 local lspkind = require 'lspkind'
 local cmp = require 'cmp'
 
@@ -13,8 +13,7 @@ M.setup = function()
         -- luasnip setup
         snippet = {
             expand = function(args)
-         vim.fn["vsnip#anonymous"](args.body)
-                -- luasnip.lsp_expand(args.body)
+                luasnip.lsp_expand(args.body)
             end,
         },
         window = {
@@ -46,8 +45,8 @@ M.setup = function()
             ['<Tab>'] = cmp.mapping(function(fallback)
                 if cmp.visible() then
                     cmp.select_next_item()
-                -- elseif luasnip.expand_or_jumpable() then
-                --     luasnip.expand_or_jump()
+                elseif luasnip.expand_or_jumpable() then
+                    luasnip.expand_or_jump()
                 elseif utils.has_words_before() then
                     cmp.complete()
                 else
@@ -66,7 +65,7 @@ M.setup = function()
         }),
         sources = cmp.config.sources({
             { name = 'nvim_lsp' },
-            { name = 'vsnip' },
+            { name = 'luasnip' },
         }, {
             { name = 'buffer' },
         }),

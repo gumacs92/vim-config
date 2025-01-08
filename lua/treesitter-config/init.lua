@@ -31,14 +31,16 @@ M.setup = function(ensure_installed)
         incremental_selection = {
             enable = true
         },
-        indent = {
+        -- indent = {
+        --     enable = true
+        -- },
+        matchup = {
             enable = true
-        },
-matchup = {
-    enable = true
         },
 
     }
+
+    --
 end
 
 return M

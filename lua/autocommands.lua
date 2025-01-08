@@ -40,16 +40,11 @@ vim.api.nvim_create_autocmd("FileType", {
     pattern = "vue",
     command = "setlocal shiftwidth=2 tabstop=2 expandtab"
 })
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "*.yml,*.yaml",
+    command = "setlocal shiftwidth=2 tabstop=2 expandtab"
+})
 
-
--- au TextYankPost * silent! lua vim.highlight.on_yank()
---
--- " format on save
--- augroup FormatAutogroup
---   autocmd!
---   autocmd BufWritePost * lua formatCode() 
--- augroup END
-    --
 vim.api.nvim_create_autocmd("TextYankPost", {
     pattern = "*",
     command = "silent! lua vim.highlight.on_yank()"
@@ -59,11 +54,6 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     pattern = "*",
     -- group = "FormatAutogroup",
     command = "lua formatCode()"
-})
-
-vim.api.nvim_create_autocmd("DirChanged", {
-    pattern = "*",
-    command = "silent! Prosession"
 })
 
 vim.api.nvim_create_user_command('Files', function(opts)
