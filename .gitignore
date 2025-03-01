@@ -3,3 +3,4 @@ plugged
 .git
 node_modules
 .yarn
+.aider*

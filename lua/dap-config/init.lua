@@ -25,7 +25,9 @@ M.setup = function(ensure_installed)
 
     -- dap.setup({})
 
-    dapui.setup({})
+    dapui.setup({
+        floating = { border = "rounded" }
+    })
 
     dap.listeners.before.attach.dapui_config = function()
         dapui.open()

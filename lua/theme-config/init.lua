@@ -209,6 +209,10 @@ M.setup = function()
     })
 
     scrollbar.setup()
+    
+    -- Custom highlights for markdown code snippets in Avante chat windows
+    vim.api.nvim_set_hl(0, "RenderMarkdownCode", { bg = "#2e3440" })
+    vim.api.nvim_set_hl(0, "RenderMarkdownCodeInline", { bg = "#2e3440" })
 
 
 -- Autocomplete icon colors
