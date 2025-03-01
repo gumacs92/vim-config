@@ -60,7 +60,6 @@ return {
     'nvim-telescope/telescope-smart-history.nvim',
     { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
     'tree-sitter-grammars/tree-sitter-markdown', -- tree-sitter grammar for markdown_inline for Lspsaga
-    -- 'kevinhwang91/nvim-bqf', {'do': ':BqfEnable'}
     'nvim-lualine/lualine.nvim',
     'folke/which-key.nvim',
     {
@@ -81,26 +80,24 @@ return {
                 -- Load the referenced buffers to apply more accurate highlights (may be slow)
                 load_buffers = true,
             },
-keys = {
-    {
-      ">",
-      function()
-        require("quicker").expand({ before = 2, after = 2, add_to_existing = true })
-      end,
-      desc = "Expand quickfix context",
-    },
-    {
-      "<",
-      function()
-        require("quicker").collapse()
-      end,
-      desc = "Collapse quickfix context",
-    },
-  },
+            keys = {
+                {
+                    ">",
+                    function()
+                        require("quicker").expand({ before = 2, after = 2, add_to_existing = true })
+                    end,
+                    desc = "Expand quickfix context",
+                },
+                {
+                    "<",
+                    function()
+                        require("quicker").collapse()
+                    end,
+                    desc = "Collapse quickfix context",
+                },
+            },
         },
     },
-    -- 'https://gitlab.com/yorickpeterse/nvim-pqf',
-    -- 'https://github.com/stefandtw/quickfix-reflector.vim',
     'olivercederborg/poimandres.nvim',
     'altercation/vim-colors-solarized',
     'atelierbram/vim-colors_atelier-schemes',
@@ -116,9 +113,21 @@ keys = {
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
     'neovim/nvim-lspconfig', --  Collection of configurations for built-in LSP client
-    'hrsh7th/nvim-cmp',      --  Autocompletion plugin
-    'hrsh7th/cmp-nvim-lsp',  --  LSP source for nvim-cmp
-    'onsails/lspkind.nvim',  --  Better icons for LSP completion items
+    {
+        "hrsh7th/nvim-cmp",
+        dependencies = {
+            {
+                "MattiasMTS/cmp-dbee",
+                dependencies = {
+                    { "kndndrj/nvim-dbee" }
+                },
+                ft = "sql", -- optional but good to have
+                opts = {},  -- needed
+            },
+        },
+    },
+    'hrsh7th/cmp-nvim-lsp', --  LSP source for nvim-cmp
+    'onsails/lspkind.nvim', --  Better icons for LSP completion items
 
 
     {
@@ -143,6 +152,7 @@ keys = {
     -- git related
     'tpope/vim-fugitive',
     'lewis6991/gitsigns.nvim',
+    { 'akinsho/git-conflict.nvim',       version = "*",      config = true },
 
     -- scrollbar
     'petertriho/nvim-scrollbar',
@@ -158,11 +168,80 @@ keys = {
     'nvim-neotest/nvim-nio',
     'mfussenegger/nvim-dap',
     'jay-babu/mason-nvim-dap.nvim',
-    'rcarriga/nvim-dap-ui',
+    { "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
 
     --null-ls install and extensions
     -- 'nvimtools/none-ls.nvim',
     'jose-elias-alvarez/null-ls.nvim',
     'jose-elias-alvarez/nvim-lsp-ts-utils',
     'jay-babu/mason-null-ls.nvim',
+    {
+        "yetone/avante.nvim",
+        event = "VeryLazy",
+        lazy = false,
+        version = false, -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
+        opts = {},
+        -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+        build = "make",
+        -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
+        dependencies = {
+            "nvim-treesitter/nvim-treesitter",
+            "stevearc/dressing.nvim",
+            "nvim-lua/plenary.nvim",
+            "MunifTanjim/nui.nvim",
+            --- The below dependencies are optional,
+            "echasnovski/mini.pick", -- for file_selector provider mini.pick
+            "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+            "hrsh7th/nvim-cmp",      -- autocompletion for avante commands and mentions
+            "ibhagwan/fzf-lua",      -- for file_selector provider fzf
+            "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+            "zbirenbaum/copilot.lua", -- for providers='copilot'
+            {
+                -- support for image pasting
+                "HakonHarnes/img-clip.nvim",
+                event = "VeryLazy",
+                opts = {
+                    -- recommended settings
+                    default = {
+                        embed_image_as_base64 = false,
+                        prompt_for_file_name = false,
+                        drag_and_drop = {
+                            insert_mode = true,
+                        },
+                        -- required for Windows users
+                        use_absolute_path = true,
+                    },
+                },
+            },
+            {
+                -- Make sure to set this up properly if you have lazy=true
+                'MeanderingProgrammer/render-markdown.nvim',
+                opts = {
+                    file_types = { "markdown", "Avante" },
+                },
+                ft = { "markdown", "Avante" },
+            },
+        },
+    },
+    {
+        "kndndrj/nvim-dbee",
+        dependencies = {
+            "MunifTanjim/nui.nvim",
+            { 'tpope/vim-dadbod',                     lazy = true },
+            { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' }, lazy = true },
+        },
+        build = function()
+            -- Install tries to automatically detect the install method.
+            -- if it fails, try calling it with one of these parameters:
+            --    "curl", "wget", "bitsadmin", "go"
+            require("dbee").install()
+        end,
+        config = function()
+            require("dbee").setup({
+                source = {
+                    require("dbee.sources").FileSource:new(vim.fn.stdpath("state") .. "/dbee/persistence.json")
+                },
+            })
+        end,
+    },
 }

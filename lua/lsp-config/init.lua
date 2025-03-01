@@ -109,6 +109,7 @@ M.setup = function(ensure_installed, configs, capabilities)
     -- 	pauseFoldsOnSearch = true,
     -- 	setupFoldKeymaps = true,
     -- }
+    --
 end
 
 

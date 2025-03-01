@@ -1,5 +1,8 @@
 {
   "dependencies": {
-    "@vue/typescript-plugin": "2.0.13"
+    "@vue/typescript-plugin": "2.0.13",
+    "global": "^4.4.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
   }
 }

@@ -10,7 +10,7 @@ M.setup = function()
 
     -- nvim-cmp setup
     cmp.setup {
-        -- luasnip setup
+        -- luasnip setupauto
         snippet = {
             expand = function(args)
                 luasnip.lsp_expand(args.body)
@@ -66,8 +66,14 @@ M.setup = function()
         sources = cmp.config.sources({
             { name = 'nvim_lsp' },
             { name = 'luasnip' },
-        }, {
+            -- { name = 'vim-dadbod-completion' },
             { name = 'buffer' },
+            -- { name = "cmp-dbee",
+            --     entry_filter = function(entry, ctx)
+            --         local ok, result = pcall(function() return entry:get_completion() end)
+            --         return ok and result ~= nil
+            --     end,
+            -- },
         }),
     }
 end
