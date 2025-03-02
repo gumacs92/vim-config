@@ -2,5 +2,9 @@
     "diagnostics.disable": [
         "unused-function",
         "undefined-global"
+    ],
+    "diagnostics.globals": [
+        "vim",
+        "get_lang_names"
     ]
 }

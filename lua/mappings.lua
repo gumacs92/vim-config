@@ -9,7 +9,10 @@ M.setup = function()
     -- " nnoremap <silent> <C-p> :Files<CR>
     -- " nnoremap <silent> <C-f> :Ag<Cr>
     --
-    --
+    --=
+
+    vim.keymap.set("t", "<ESC>", "<C-\\><C-n>", { noremap = true, silent = true })
+    vim.keymap.set("t", "jk", "<C-\\><C-n>", { noremap = true, silent = true })
 
     vim.keymap.set("n", "<leader>q", function() vim.cmd('BufDel!') end, { noremap = true, silent = true })
     vim.keymap.set("n", "<leader>cq", ':BufDelOther!<CR>', { noremap = true, silent = true })

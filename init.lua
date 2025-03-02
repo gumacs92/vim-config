@@ -21,12 +21,6 @@ require 'mappings'.setup()
 require 'autocommands'.setup()
 
 
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
--- local wk = require("which-key")
--- wk.setup {}
---
---
-
 _G.formatCode = function()
     vim.lsp.buf.format({
         timeout_ms = 15000,
@@ -44,166 +38,6 @@ local function get_plugins()
     return plugins
 end
 
-
-local languageConfigs = {
-    typescript = {
-        lsp = {
-            ts_ls = {
-                init_options = {
-                    plugins = {
-                        {
-                            name = "@vue/typescript-plugin",
-                            languages = { "javascript", "typescript", "vue" },
-                            location = vim.fn.stdpath('config') .. "/node_modules/@vue/typescript-plugin",
-                        },
-                    },
-                },
-                filetypes = {
-                    "javascript",
-                    "typescript",
-                    "vue",
-                    "typescriptreact",
-                    "javascriptreact",
-                },
-                on_attach = function(client, bufnr)
-                    local tsUtils = require('nvim-lsp-ts-utils')
-
-                    tsUtils.setup {
-                        -- options
-                        auto_inlay_hints = true,
-                        inlay_hints_highlight = "Comment",
-                        enable_import_on_completion = true,
-                    }
-
-                    tsUtils.setup_client(client)
-                end
-            },
-        },
-        linters = { "eslint_d" },
-        formatters = { "prettierd" },
-        --     -- dap = { "node2" }
-    },
-    json = {
-        lsp = { "jsonls" },
-        formatters = { "prettierd" }
-    },
-    vim = {
-        lsp = { "vimls" }
-    },
-    lua = {
-        lsp = {
-            lua_ls = {
-                settings = {
-                    Lua = {
-                        runtime = {
-                            version = 'LuaJIT'
-                        },
-                        diagnostics = {
-                            globals = { 'vim' },
-                        },
-                        workspace = {
-                            maxPreload = 2000,
-                            preloadFileSize = 1000,
-                            library = {
-                                vim.env.VIMRUNTIME,
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    },
-    vue = {
-        lsp = {
-            volar = {
-                codeAction = {
-                    enable = true,
-                    kinds = { "quickfix", "source.organizeImports" }
-                },
-            }
-        },
-        formatters = { "prettierd" },
-    },
-    svelte = {
-        lsp = { "svelte" }
-    },
-    php = {
-        lsp = { "intelephense" },
-        linters = { "phpstan" },
-        formatter = { "phpcsfixer", "php-cs-fixer", "phpcs" },
-        dap = { "php" }
-    },
-    html = {
-        lsp = { "html" }
-    },
-    css = {
-        lsp = { 'cssls', 'tailwindcss' },
-        formatters = { "prettierd" },
-    },
-    java = {
-        lsp = { "jdtls" }
-    },
-    kotlin = {
-        lsp = { "kotlin_language_server" }
-    }
-}
-
-for _, plugin_path in ipairs(get_plugins()) do
-    table.insert(languageConfigs.lua.lsp.lua_ls.settings.Lua.workspace.library, plugin_path)
-end
-
-capabilities = {
-    workspace = {
-        didChangeWatchedFiles = {
-            ddynamicRegistration = true
-        }
-    },
-    textDocument = {
-        foldingRange = {
-            dynamicRegistration = false,
-            lineFoldingOnly = true
-        }
-    }
-}
-
-local treesitterConfig = {}
-local ensureInstalledLsps = {}
-local lspConfig = {}
-local nullLsconfig = {}
-local dapConfig = {}
-for lang, config in pairs(languageConfigs) do
-    if config.lsp then
-        for key, value in pairs(config.lsp) do
-            -- print(key, value)
-            if type(key) == "number" then
-                table.insert(ensureInstalledLsps, value)
-            else
-                table.insert(ensureInstalledLsps, key)
-                lspConfig[key] = value
-            end
-        end
-    end
-    if config.formatters then
-        for _, formatter in pairs(config.formatters) do
-            table.insert(nullLsconfig, formatter)
-        end
-    end
-    if config.linters then
-        for _, linter in pairs(config.linters) do
-            table.insert(nullLsconfig, linter)
-        end
-    end
-    if config.dap then
-        for _, dapAdapter in pairs(config.dap) do
-            table.insert(dapConfig, dapAdapter)
-        end
-    end
-    table.insert(treesitterConfig, lang)
-end
-
--- -- let g:copilot_no_tab_map = v:true
-vim.g.copilot_node_command = "~/.nvm/versions/node/v18.12.1/bin/node"
-vim.g.copilot_no_tab_map = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.hlsearch = true
@@ -274,7 +108,7 @@ require "general-config/init".setup()
 require "autocomplete-config/init".setup()
 
 require "mason".setup() -- This is the main plugin that allow us to install and configure language servers and formatters
-require 'lsp-config/init'.setup(ensureInstalledLsps, lspConfig, capabilities)
+require 'lsp-config/init'.setup()
 require 'null-ls-config/init'.setup(nullLsconfig)
 require 'git-config/init'.setup()
 require 'dap-config/init'.setup(dapConfig)
