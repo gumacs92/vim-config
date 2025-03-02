@@ -11,7 +11,8 @@ M.lsp_config = {
     settings = {
       Lua = {
         runtime = {
-          version = 'LuaJIT'
+          version = 'LuaJIT',
+          path = vim.split(package.path, ';'),
         },
         completion = {
           callSnippet = "Replace",
@@ -22,7 +23,7 @@ M.lsp_config = {
         workspace = {
           maxPreload = 2000,
           preloadFileSize = 1000,
-          library = { vim.env.VIMRUNTIME },
+          library = { vim.env.VIMRUNTIME, vim.fn.stdpath("config") .. "/lua" },
         },
         telemetry = {
           enable = false,

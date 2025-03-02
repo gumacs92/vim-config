@@ -1,4 +1,5 @@
 local masonLspConfig = require("mason-lspconfig")
+
 local lspconfig = require('lspconfig')
 local lspSage = require('lspsaga')
 local ufo = require('ufo')
@@ -35,7 +36,7 @@ M.setup = function()
     --     -- This is the default in Nvim 0.7+
     --     debounce_text_changes = 150,
     -- }
-
+    --
 
     for _, server_name in ipairs(get_lang_names()) do
         local config = require("lsp-config.langs." .. server_name)
@@ -46,7 +47,7 @@ M.setup = function()
             local setupObject = {
                 flags = lsp_flags or {},
                 on_attach = function(client, bufnr)
-                    local mapping_on_attach = require"lsp-config.mappings".setup()
+                    local mapping_on_attach = require "lsp-config.mappings".setup()
                     mapping_on_attach()
                     if serverConfig.on_attach then
                         serverConfig.on_attach(client, bufnr)
