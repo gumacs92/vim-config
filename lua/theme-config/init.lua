@@ -6,6 +6,7 @@ local oil = require("oil")
 local status_const = require "oil-vcs-status.constant.status"
 local colorizer = require 'colorizer'
 local scrollbar = require 'scrollbar'
+local tabby = require 'tabby'
 
 local StatusType = status_const.StatusType
 
@@ -208,55 +209,152 @@ M.setup = function()
         footer = '',
     })
 
+    -- Helper function to get display name for windows in tabby
+    local function get_window_display_name(win)
+        local buf_name_display
+        local bufnr = vim.api.nvim_win_get_buf(win.id)
+        -- Use pcall for safety, as buf options might not exist for all buffer types
+        local success, is_terminal = pcall(vim.api.nvim_buf_get_option, bufnr, 'buftype')
+        is_terminal = success and is_terminal == 'terminal'
+
+        if is_terminal then
+            local full_buf_name = vim.api.nvim_buf_get_name(bufnr)
+            -- Example: term://.//16010:/bin/zsh
+            -- Find the position of the last colon
+            local last_colon_idx
+            for i = #full_buf_name, 1, -1 do
+                if full_buf_name:sub(i, i) == ':' then
+                    last_colon_idx = i
+                    break
+                end
+            end
+
+            if last_colon_idx then
+                local cmd_part = full_buf_name:sub(last_colon_idx + 1)
+                cmd_part = vim.trim(cmd_part)                                  -- Trim whitespace
+                -- Split by space and take the first part (the command path)
+                local parts = vim.split(cmd_part, '%s+', { trimempty = true }) -- Split by one or more spaces
+                if #parts > 0 then
+                    -- Get the base name of the command (e.g., /bin/zsh -> zsh)
+                    buf_name_display = vim.fn.fnamemodify(parts[1], ':t')
+                    -- Handle cases where the command might be empty after extraction
+                    if buf_name_display == '' then
+                        buf_name_display = 'term' -- Fallback display name
+                    end
+                else
+                    buf_name_display = 'term' -- Fallback if parsing fails
+                end
+            else
+                buf_name_display = 'term' -- Fallback if no colon found
+            end
+        else
+            -- For non-terminal buffers, use the default name provided by tabby
+            buf_name_display = win.buf_name()
+        end
+        return buf_name_display
+    end
+
+
+    local theme = {
+        fill = 'TabLineFill',
+        -- Also you can do this: fill = { fg='#f2e9de', bg='#907aa9', style='italic' }
+        head = 'TabLine',
+        current_tab = 'TabLineSel',
+        tab = 'TabLine',
+        win = 'TabLine',
+        tail = 'TabLine',
+    }
+    vim.o.showtabline = 2
+    tabby.setup({
+        line = function(line)
+            return {
+                {
+                    { '  ', hl = theme.head },
+                    line.sep('', theme.head, theme.fill),
+                },
+                line.tabs().foreach(function(tab)
+                    local hl = tab.is_current() and theme.current_tab or theme.tab
+                    local cwd = ' ' .. vim.fn.fnamemodify(vim.fn.getcwd(0, tab.number()), ':t') .. ' '
+                    return {
+                        line.sep('', hl, theme.fill),
+                        tab.is_current() and '' or '󰆣',
+                        tab.number(),
+                        cwd,
+                        tab.close_btn(''),
+                        line.sep('', hl, theme.fill),
+                        hl = hl,
+                        margin = ' ',
+                    }
+                end),
+                line.spacer(),
+                line.wins_in_tab(line.api.get_current_tab()).foreach(function(win)
+                    return {
+                        line.sep('', theme.win, theme.fill),
+                        win.is_current() and '' or '',
+                        get_window_display_name(win), -- Use the helper function here
+                        line.sep('', theme.win, theme.fill),
+                        hl = theme.win,
+                        margin = ' ',
+                    }
+                end),
+                {
+                    line.sep('', theme.tail, theme.fill),
+                    { '  ', hl = theme.tail },
+                },
+                hl = theme.fill,
+            }
+        end,
+        -- option = {}, -- setup modules' option,
+    })
+
     scrollbar.setup()
-    
+
     -- Custom highlights for markdown code snippets in Avante chat windows
     vim.api.nvim_set_hl(0, "RenderMarkdownCode", { bg = "#2e3440" })
     vim.api.nvim_set_hl(0, "RenderMarkdownCodeInline", { bg = "#2e3440" })
 
 
--- Autocomplete icon colors
-vim.api.nvim_set_hl(0, "PmenuSel", { bg = "#282C34", fg = "NONE" })
-vim.api.nvim_set_hl(0, "Pmenu", { fg = "#C5CDD9", bg = "#22252A" })
+    -- Autocomplete icon colors
+    vim.api.nvim_set_hl(0, "PmenuSel", { bg = "#282C34", fg = "NONE" })
+    vim.api.nvim_set_hl(0, "Pmenu", { fg = "#C5CDD9", bg = "#22252A" })
 
-vim.api.nvim_set_hl(0, "CmpItemAbbrDeprecated", { fg = "#7E8294", bg = "NONE", strikethrough = true })
-vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { fg = "#82AAFF", bg = "NONE", bold = true })
-vim.api.nvim_set_hl(0, "CmpItemAbbrMatchFuzzy", { fg = "#82AAFF", bg = "NONE", bold = true })
-vim.api.nvim_set_hl(0, "CmpItemMenu", { fg = "#C792EA", bg = "NONE", italic = true })
+    vim.api.nvim_set_hl(0, "CmpItemAbbrDeprecated", { fg = "#7E8294", bg = "NONE", strikethrough = true })
+    vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { fg = "#82AAFF", bg = "NONE", bold = true })
+    vim.api.nvim_set_hl(0, "CmpItemAbbrMatchFuzzy", { fg = "#82AAFF", bg = "NONE", bold = true })
+    vim.api.nvim_set_hl(0, "CmpItemMenu", { fg = "#C792EA", bg = "NONE", italic = true })
 
-vim.api.nvim_set_hl(0, "CmpItemKindField", { fg = "#EED8DA", bg = "#B5585F" })
-vim.api.nvim_set_hl(0, "CmpItemKindProperty", { fg = "#EED8DA", bg = "#B5585F" })
-vim.api.nvim_set_hl(0, "CmpItemKindEvent", { fg = "#EED8DA", bg = "#B5585F" })
+    vim.api.nvim_set_hl(0, "CmpItemKindField", { fg = "#EED8DA", bg = "#B5585F" })
+    vim.api.nvim_set_hl(0, "CmpItemKindProperty", { fg = "#EED8DA", bg = "#B5585F" })
+    vim.api.nvim_set_hl(0, "CmpItemKindEvent", { fg = "#EED8DA", bg = "#B5585F" })
 
-vim.api.nvim_set_hl(0, "CmpItemKindText", { fg = "#C3E88D", bg = "#9FBD73" })
-vim.api.nvim_set_hl(0, "CmpItemKindEnum", { fg = "#C3E88D", bg = "#9FBD73" })
-vim.api.nvim_set_hl(0, "CmpItemKindKeyword", { fg = "#C3E88D", bg = "#9FBD73" })
+    vim.api.nvim_set_hl(0, "CmpItemKindText", { fg = "#C3E88D", bg = "#9FBD73" })
+    vim.api.nvim_set_hl(0, "CmpItemKindEnum", { fg = "#C3E88D", bg = "#9FBD73" })
+    vim.api.nvim_set_hl(0, "CmpItemKindKeyword", { fg = "#C3E88D", bg = "#9FBD73" })
 
-vim.api.nvim_set_hl(0, "CmpItemKindConstant", { fg = "#FFE082", bg = "#D4BB6C" })
-vim.api.nvim_set_hl(0, "CmpItemKindConstructor", { fg = "#FFE082", bg = "#D4BB6C" })
-vim.api.nvim_set_hl(0, "CmpItemKindReference", { fg = "#FFE082", bg = "#D4BB6C" })
+    vim.api.nvim_set_hl(0, "CmpItemKindConstant", { fg = "#FFE082", bg = "#D4BB6C" })
+    vim.api.nvim_set_hl(0, "CmpItemKindConstructor", { fg = "#FFE082", bg = "#D4BB6C" })
+    vim.api.nvim_set_hl(0, "CmpItemKindReference", { fg = "#FFE082", bg = "#D4BB6C" })
 
-vim.api.nvim_set_hl(0, "CmpItemKindFunction", { fg = "#EADFF0", bg = "#A377BF" })
-vim.api.nvim_set_hl(0, "CmpItemKindStruct", { fg = "#EADFF0", bg = "#A377BF" })
-vim.api.nvim_set_hl(0, "CmpItemKindClass", { fg = "#EADFF0", bg = "#A377BF" })
-vim.api.nvim_set_hl(0, "CmpItemKindModule", { fg = "#EADFF0", bg = "#A377BF" })
-vim.api.nvim_set_hl(0, "CmpItemKindOperator", { fg = "#EADFF0", bg = "#A377BF" })
+    vim.api.nvim_set_hl(0, "CmpItemKindFunction", { fg = "#EADFF0", bg = "#A377BF" })
+    vim.api.nvim_set_hl(0, "CmpItemKindStruct", { fg = "#EADFF0", bg = "#A377BF" })
+    vim.api.nvim_set_hl(0, "CmpItemKindClass", { fg = "#EADFF0", bg = "#A377BF" })
+    vim.api.nvim_set_hl(0, "CmpItemKindModule", { fg = "#EADFF0", bg = "#A377BF" })
+    vim.api.nvim_set_hl(0, "CmpItemKindOperator", { fg = "#EADFF0", bg = "#A377BF" })
 
-vim.api.nvim_set_hl(0, "CmpItemKindVariable", { fg = "#C5CDD9", bg = "#7E8294" })
-vim.api.nvim_set_hl(0, "CmpItemKindFile", { fg = "#C5CDD9", bg = "#7E8294" })
+    vim.api.nvim_set_hl(0, "CmpItemKindVariable", { fg = "#C5CDD9", bg = "#7E8294" })
+    vim.api.nvim_set_hl(0, "CmpItemKindFile", { fg = "#C5CDD9", bg = "#7E8294" })
 
-vim.api.nvim_set_hl(0, "CmpItemKindUnit", { fg = "#F5EBD9", bg = "#D4A959" })
-vim.api.nvim_set_hl(0, "CmpItemKindSnippet", { fg = "#F5EBD9", bg = "#D4A959" })
-vim.api.nvim_set_hl(0, "CmpItemKindFolder", { fg = "#F5EBD9", bg = "#D4A959" })
+    vim.api.nvim_set_hl(0, "CmpItemKindUnit", { fg = "#F5EBD9", bg = "#D4A959" })
+    vim.api.nvim_set_hl(0, "CmpItemKindSnippet", { fg = "#F5EBD9", bg = "#D4A959" })
+    vim.api.nvim_set_hl(0, "CmpItemKindFolder", { fg = "#F5EBD9", bg = "#D4A959" })
 
-vim.api.nvim_set_hl(0, "CmpItemKindMethod", { fg = "#DDE5F5", bg = "#6C8ED4" })
-vim.api.nvim_set_hl(0, "CmpItemKindValue", { fg = "#DDE5F5", bg = "#6C8ED4" })
-vim.api.nvim_set_hl(0, "CmpItemKindEnumMember", { fg = "#DDE5F5", bg = "#6C8ED4" })
+    vim.api.nvim_set_hl(0, "CmpItemKindMethod", { fg = "#DDE5F5", bg = "#6C8ED4" })
+    vim.api.nvim_set_hl(0, "CmpItemKindValue", { fg = "#DDE5F5", bg = "#6C8ED4" })
+    vim.api.nvim_set_hl(0, "CmpItemKindEnumMember", { fg = "#DDE5F5", bg = "#6C8ED4" })
 
-vim.api.nvim_set_hl(0, "CmpItemKindInterface", { fg = "#D8EEEB", bg = "#58B5A8" })
-vim.api.nvim_set_hl(0, "CmpItemKindColor", { fg = "#D8EEEB", bg = "#58B5A8" })
-vim.api.nvim_set_hl(0, "CmpItemKindTypeParameter", { fg = "#D8EEEB", bg = "#58B5A8" })
-
+    vim.api.nvim_set_hl(0, "CmpItemKindInterface", { fg = "#D8EEEB", bg = "#58B5A8" })
+    vim.api.nvim_set_hl(0, "CmpItemKindColor", { fg = "#D8EEEB", bg = "#58B5A8" })
+    vim.api.nvim_set_hl(0, "CmpItemKindTypeParameter", { fg = "#D8EEEB", bg = "#58B5A8" })
 end
 
 return M

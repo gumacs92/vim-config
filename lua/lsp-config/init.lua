@@ -1,8 +1,10 @@
 local masonLspConfig = require("mason-lspconfig")
-
+local lint = require("lint")
 local lspconfig = require('lspconfig')
 local lspSage = require('lspsaga')
 local ufo = require('ufo')
+local conform = require("conform")
+
 -- local origami = require("origami")
 --
 function get_lang_names()
@@ -28,8 +30,6 @@ local M = {}
 
 M.setup = function()
     local ensure_installed = {}
-    local nullLsconfig = {}
-    local lsp_config = {}
     local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
     -- local lsp_flags = {
@@ -64,18 +64,7 @@ M.setup = function()
 
             lspconfig[server_name].setup(setupObject)
         end
-        if config.formatters then
-            for _, formatter in pairs(config.formatters) do
-                table.insert(nullLsconfig, formatter)
-            end
-        end
-        if config.linters then
-            for _, linter in pairs(config.linters) do
-                table.insert(nullLsconfig, linter)
-            end
-        end
     end
-
 
     -- Configuring mason
     masonLspConfig.setup {
@@ -99,6 +88,75 @@ M.setup = function()
         }
     }
 
+    lint.linters = {
+        eslint_d = {
+            args = {
+                '--no-warn-ignored', -- <-- this is the key argument
+                -- '--format',
+                'json',
+                '--stdin',
+                '--stdin-filename',
+                function()
+                    return vim.api.nvim_buf_get_name(0)
+                end,
+            },
+        },
+    }
+    lint.linters_by_ft = {
+        -- markdown = { "markdownlint" },
+        -- lua = { "luacheck" },
+        vue = { "eslint_d" },
+        javascript = { "eslint_d" },
+        typescript = { "eslint_d" },
+        javascriptreact = { "eslint_d" },
+        typescriptreact = { "eslint_d" },
+        -- php = { "phpstan" },
+        json = { "eslint_d" },
+        xml = { "xmllint" },
+        -- html = { "tidy" },
+        -- css = { "stylelint" },
+        -- scss = { "stylelint" },
+    }
+
+    -- local phpstan = require('lint').linters.phpstan
+    -- phpstan.cmd = function()
+    --     local bin = 'phpstan'
+    --     local local_bin = vim.fn.fnamemodify('vendor/bin/' .. bin, ':p')
+    --     local project_local_bin = vim.fn.fnamemodify('project/vendor/bin/' .. bin, ':p')
+    --     return vim.loop.fs_stat(local_bin) and local_bin or
+    --         vim.loop.fs_stat(project_local_bin) and project_local_bin or
+    --         ''
+    -- end
+
+    vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
+        callback = function()
+            lint.try_lint()
+        end,
+    })
+
+
+    conform.setup {
+        formatters_by_ft = {
+            markdown = { "prettier", stop_after_first = true },
+            lua = { "stylua" },
+            vue = { "prettier" },
+            javascript = { "prettier" },
+            typescript = { "prettier" },
+            javascriptreact = { "prettier" },
+            typescriptreact = { "prettier" },
+            php = { "php-cs-fixer" },
+            json = { "prettier" },
+            xml = { "xmllint" },
+            html = { "tidy" },
+            css = { "stylelint" },
+            scss = { "stylelint" }
+        },
+        format_on_save = {
+            -- These options will be passed to conform.format()
+            timeout_ms = 5000,
+            lsp_format = "fallback",
+        },
+    }
 
     ufo.setup({
         -- provider_selector = function(bufnr, filetype, buftype)
@@ -133,6 +191,7 @@ M.setup = function()
             return newVirtText
         end
     })
+
     --
     -- origami.setup {
     -- 	keepFoldsAcrossSessions = true,
@@ -141,6 +200,5 @@ M.setup = function()
     -- }
     --
 end
-
 
 return M

@@ -5,6 +5,21 @@ local function escape_pattern(str)
     return str:gsub("[%[%]%%().%*+-?^$]", "%%%0")
 end
 
+M.mergeTables = function(t1, t2)
+    local merged = {}
+    for k, v in pairs(t1) do
+        merged[k] = v
+    end
+    for k, v in pairs(t2) do
+        if type(v) == "table" and type(merged[k]) == "table" then
+            merged[k] = M.mergeTables(merged[k], v)
+        else
+            merged[k] = v
+        end
+    end
+    return merged
+end
+
 M.has_words_before = function()
     unpack = unpack or table.unpack
     local line, col = unpack(vim.api.nvim_win_get_cursor(0))

@@ -11,8 +11,8 @@ M.setup = function()
     vim.keymap.set('n', '[d', '<cmd>Lspsaga diagnostic_jump_prev<cr>', opts)
     vim.keymap.set('n', ']d', '<cmd>Lspsaga diagnostic_jump_next<cr>', opts)
     vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
-    vim.keymap.set('n', '<leader>ld', ":LspStop<CR>", opts)
-    vim.keymap.set('n', '<leader>ls', ":LspStart<CR>", opts)
+    -- vim.keymap.set('n', '<leader>ld', ":LspStop<CR>", opts)
+    -- vim.keymap.set('n', '<leader>ls', ":LspStart<CR>", opts)
 
 
     -- Use an on_attach function to only map the following keys
@@ -29,9 +29,9 @@ M.setup = function()
         vim.keymap.set('n', 'gpd', '<cmd>Lspsaga peek_definition<cr>', bufopts)
         vim.keymap.set('n', 'gtd', '<cmd>Lspsaga goto_type_definition<cr>', bufopts)
         vim.keymap.set('n', 'gptd', '<cmd>Lspsaga peek_type_definition<cr>', bufopts)
-        -- vim.keymap.set('n', 'K', '<cmd>Lspsaga hover_doc<cr>', bufopts)
+        vim.keymap.set('n', 'K', '<cmd>Lspsaga hover_doc<cr>', bufopts)
         vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+        -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
         vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
         vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
         vim.keymap.set('n', '<space>wl', function()
@@ -40,7 +40,6 @@ M.setup = function()
         vim.keymap.set('n', '<leader>rn', '<cmd>Lspsaga rename<cr>', bufopts)
         vim.keymap.set('n', '<leader>ca', '<cmd>Lspsaga code_action<cr>', bufopts)
         vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-        -- vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
     end
 
 

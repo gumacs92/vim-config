@@ -47,11 +47,11 @@ M.setup = function()
         command = "silent! lua vim.highlight.on_yank()"
     })
 
-    vim.api.nvim_create_autocmd("BufWritePost", {
-        pattern = "*",
-        -- group = "FormatAutogroup",
-        command = "lua formatCode()"
-    })
+    -- vim.api.nvim_create_autocmd("BufWritePost", {
+    --     pattern = "*",
+    --     -- group = "FormatAutogroup",
+    --     command = "lua formatCode()"
+    -- })
 
     vim.api.nvim_create_user_command('Files', function(opts)
         -- Building the options string from Lua
@@ -92,6 +92,10 @@ M.setup = function()
     --     end
     -- })
 
+    -- vim.api.nvim_create_autocmd(["TabEnter", "DirChanged"], {
+    --     pattern = "*",
+    --     command = "silent! lua require('harpon').setup()"
+    -- })
 
     -- " set foldmethod=expr
     -- " set foldexpr=nvim_treesitter#foldexpr()

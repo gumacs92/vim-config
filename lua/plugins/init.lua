@@ -3,6 +3,10 @@ return {
     'tpope/vim-repeat',
     'tpope/vim-sensible',
     {
+        'jedrzejboczar/possession.nvim',
+        dependencies = { 'nvim-lua/plenary.nvim' },
+    },
+    {
         'dhruvasagar/vim-prosession',
         dependencies = { 'tpope/vim-obsession' }
     },
@@ -113,6 +117,7 @@ return {
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
     'neovim/nvim-lspconfig', --  Collection of configurations for built-in LSP client
+    'onsails/lspkind.nvim',
     {
         "hrsh7th/nvim-cmp",
         dependencies = {
@@ -128,6 +133,30 @@ return {
     },
     'hrsh7th/cmp-nvim-lsp', --  LSP source for nvim-cmp
     'onsails/lspkind.nvim', --  Better icons for LSP completion items
+    {
+        {
+            "folke/lazydev.nvim",
+            ft = "lua", -- only load on lua files
+            opts = {
+                library = {
+                    -- See the configuration section for more details
+                    -- Load luvit types when the `vim.uv` word is found
+                    { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+                },
+            },
+        },
+        { -- optional cmp completion source for require statements and module annotations
+            "hrsh7th/nvim-cmp",
+            opts = function(_, opts)
+                opts.sources = opts.sources or {}
+                table.insert(opts.sources, {
+                    name = "lazydev",
+                    group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+                })
+            end,
+        },
+
+    },
 
 
     {
@@ -156,11 +185,23 @@ return {
 
     -- scrollbar
     'petertriho/nvim-scrollbar',
+    {
+        'nanozuki/tabby.nvim',
+        -- event = 'VimEnter', -- if you want lazy load, see below
+        dependencies = 'nvim-tree/nvim-web-devicons',
+    },
 
     -- copilot
     'github/copilot.vim',
+    {
+        "ThePrimeagen/harpoon",
+        branch = "harpoon2",
+        dependencies = { "nvim-lua/plenary.nvim" }
+    },
+    'jake-stewart/auto-cmdheight.nvim',
 
-    -- starterscree
+
+    -- starterscreen
     'echasnovski/mini.nvim',
     'echasnovski/mini.starter',
 
@@ -172,8 +213,10 @@ return {
 
     --null-ls install and extensions
     -- 'nvimtools/none-ls.nvim',
-    'jose-elias-alvarez/null-ls.nvim',
+    -- 'jose-elias-alvarez/null-ls.nvim',
     'jose-elias-alvarez/nvim-lsp-ts-utils',
+    'mfussenegger/nvim-lint',
+    'stevearc/conform.nvim',
     'jay-babu/mason-null-ls.nvim',
     {
         "kndndrj/nvim-dbee",
@@ -201,32 +244,12 @@ return {
         cmd = {
             "AiderTerminalToggle", "AiderHealth",
         },
-        keys = {
-            { "<leader>a/", "<cmd>AiderTerminalToggle<cr>", desc = "Open Aider" },
-            { "<leader>as", "<cmd>AiderTerminalSend<cr>",          desc = "Send to Aider",                  mode = { "n", "v" } },
-            { "<leader>ac", "<cmd>AiderQuickSendCommand<cr>",      desc = "Send Command To Aider" },
-            { "<leader>ab", "<cmd>AiderQuickSendBuffer<cr>",       desc = "Send Buffer To Aider" },
-            { "<leader>a+", "<cmd>AiderQuickAddFile<cr>",          desc = "Add File to Aider" },
-            { "<leader>a-", "<cmd>AiderQuickDropFile<cr>",         desc = "Drop File from Aider" },
-            { "<leader>ar", "<cmd>AiderQuickReadOnlyFile<cr>",     desc = "Add File as Read-Only" },
-            -- Example nvim-tree.lua integration if needed
-            { "<leader>a+", "<cmd>AiderTreeAddFile<cr>",           desc = "Add File from Tree to Aider",    ft = "NvimTree" },
-            { "<leader>a-", "<cmd>AiderTreeDropFile<cr>",          desc = "Drop File from Tree from Aider", ft = "NvimTree" },
-        },
+        -- Keys moved to lua/plugins/aider/init.lua
         dependencies = {
             "folke/snacks.nvim",
             --- The below dependencies are optional
             "catppuccin/nvim",
             "nvim-tree/nvim-tree.lua",
         },
-        config = true,
-        opts = {
-            aider_cmd = "aider --model=o3-mini",
-            win = {
-                wo = { winbar = "Aider" },
-                style = "nvim_aider",
-                position = "right",
-            },
-        }
     }
 }

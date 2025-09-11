@@ -1,40 +1,29 @@
 <template>
-  <h5 class="asd" @click="test10">
-    test hello
-    test hello
-    test hello
-    test hello
-    test hello
-    test hello
-    test hello
-    test hello
-    test hello
-    test hello
+  <h5 class="flex" @click="test10">
+    test hello test hello test hello test hello test hello test hello test hello
+    test hello test hello test hello
   </h5>
 
-    <div>h ello</div>
+  <div>h ello</div>
 </template>
 <script lang="ts" setup>
 // definePageMeta({});
 
-
-if(true){
-
-} else if(false){
-
+if (true) {
+} else if (false) {
 } else {
 }
 // asdfasdf
 const test = [
-    {
-        age: 11,
-        name: "test",
-    },
-    {
-        name: "test",
-        age: 12,
-    },
-]
+  {
+    age: 11,
+    name: "test",
+  },
+  {
+    name: "test",
+    age: 12,
+  },
+];
 
 const tes = ref(false);
 
@@ -43,9 +32,9 @@ const te = computed(() => {
 });
 
 const test9 = () => {
-    if(true){
-        console.log("test9");
-    }
+  if (true) {
+    console.log("test9");
+  }
   console.log("test9");
 };
 
@@ -56,7 +45,6 @@ const test10 = () => {
 const test11 = () => {
   console.log("test11");
 };
-
 
 // functio which adds two number
 const adder = (a: number, b: number) => {
@@ -69,6 +57,6 @@ const multiplier = (a: number, b: number) => {
 };
 
 onMounted(() => {
-    multiplier(2, 3);
-})
+  multiplier(2, 3);
+});
 </script>

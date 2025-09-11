@@ -1,4 +1,4 @@
----------------------------------------------------------------------------
+---------------------------------------------------------------------------init
 -- lazy.nvim base config
 ---------------------------------------------------------------------------
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -23,9 +23,12 @@ require 'autocommands'.setup()
 
 _G.formatCode = function()
     vim.lsp.buf.format({
-        timeout_ms = 15000,
+        timeout_ms = 5000,
         filter = function(client)
-            return client.name ~= "ts_ls" and client.name ~= "volar"
+            -- print('Buf format client')
+            -- print(client.name)
+            -- return client.name ~= "ts_ls" and client.name ~= "volar"
+            return client.name ~= "eslint"
         end
     })
 end
@@ -101,6 +104,7 @@ vim.opt.swapfile = false
 
 -- vim.g.wildfire_objects = { "i'", "a'", 'i"', 'a"', "i)", "a)", "i]", "a]", "i}", "a}", "it", "at" }
 
+-- require 'session-config.init'.setup()
 require 'neovide-config/init'.setup()
 require 'theme-config/init'.setup()
 require 'treesitter-config/init'.setup(treesitterConfig)
@@ -109,9 +113,31 @@ require "autocomplete-config/init".setup()
 
 require "mason".setup() -- This is the main plugin that allow us to install and configure language servers and formatters
 require 'lsp-config/init'.setup()
-require 'null-ls-config/init'.setup(nullLsconfig)
 require 'git-config/init'.setup()
-require 'dap-config/init'.setup(dapConfig)
+require 'dap-config/init'.setup(daConfig)
+require 'aider.init'.setup() -- Setup aider from its dedicated module
+-- require 'i18n.init'.setup()  -- Setup i18n from its dedicated module
+
+local capture_log = function()
+    -- Capture the messages output using vim.fn.execute
+    local messages_output = vim.fn.execute("redir => messages_output | messages | redir END")
+
+    -- Split the output into lines
+    local lines = vim.split(messages_output, "\n")
+
+    -- Map each line to a quickfix entry
+    local qf_list = {}
+    for _, line in ipairs(lines) do
+        table.insert(qf_list, { text = line })
+    end
+
+    -- Set the quickfix list with the new entries
+    vim.fn.setqflist(qf_list)
+
+    -- Open the quickfix window
+    vim.cmd("copen")
+end
+vim.keymap.set("n", "<leader>cl", capture_log, { desc = "Capture log" })
 
 local oil = require("oil")
 vim.api.nvim_create_autocmd("VimEnter", {
@@ -127,5 +153,6 @@ vim.api.nvim_create_autocmd("VimEnter", {
         end, { desc = "Map enter for oil and plug", noremap = true })
     end
 })
+
 
 print "Sourced init.lua"

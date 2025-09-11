@@ -1,6 +1,7 @@
+const logger = require("./test2.js").logger;
 
 let hello = "hello world";
 
-console.log(hello);
+logger(hello);
 
 console.log(1 + 2);

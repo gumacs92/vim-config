@@ -82,7 +82,8 @@ M.setup = function(ensure_installed)
         { desc = "Hover Variables", noremap = true })
     vim.keymap.set('n', "<leader>dS", function() require("dap.ui.widgets").scopes() end,
         { desc = "Scopes", noremap = true })
-    vim.keymap.set('n', "<leader>di", function() dap.step_into() end, { desc = "Step Into", noremap = true })
+    vim.keymap.set('n', "<leader>di", function() dap.step_into({ askForTargets = true }) end,
+        { desc = "Step Into", noremap = true })
     vim.keymap.set('n', "<leader>do", function() dap.step_over() end, { desc = "Step Over", noremap = true })
     vim.keymap.set('n', "<leader>dp", function() dap.pause.toggle() end, { desc = "Pause", noremap = true })
     vim.keymap.set('n', "<leader>dq", function() dap.close() end, { desc = "Quit", noremap = true })
@@ -94,7 +95,6 @@ M.setup = function(ensure_installed)
     vim.keymap.set('n', "<leader>dx", function() dap.terminate() end, { desc = "Terminate", noremap = true })
     vim.keymap.set('n', "<leader>du", function() dap.step_out() end, { desc = "Step Out", noremap = true })
 
-    --
     dap.set_log_level("TRACE")
     dap.adapters.php = {
         type = 'executable',

@@ -4,12 +4,13 @@ local comment = require "Comment"
 local commentstring = require 'ts_context_commentstring.integrations.comment_nvim'
 local bufdel = require 'bufdel'
 local ufo = require 'ufo'
+local harpoon = require 'harpoon'
 require "telescope._extensions.prosession"
 
 local M = {}
 
 M.setup = function()
-    vim.opt.switchbuf = "useopen"
+    vim.opt.switchbuf = "usetab,vsplit" -- Allow switching to buffers not currently open in a window
     vim.g.prosession_dir = '~/.local/state/nvim/sessions'
 
     vim.g['loaded_netrw'] = 1
@@ -29,7 +30,7 @@ M.setup = function()
 
     vim.diagnostic.config({
         virtual_text = true,
-        virtual_lines = true,
+        virtual_lines = false,
         signs = true,
         underline = true,
         -- update_in_insert = true,
@@ -74,7 +75,6 @@ M.setup = function()
     -- end
 
     -- Configuring Telescope plugin
-
     telescope.setup {
         defaults = {
             preview_cutoff = 200,
@@ -120,6 +120,8 @@ M.setup = function()
         }
     }
 
+    harpoon:setup()
+
     -- Loading Telescope extensions
     -- telescope.load_extension('smart_history')
     telescope.load_extension('fzf')
@@ -137,5 +139,6 @@ M.setup = function()
 
     vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 end
+
 
 return M

@@ -1,15 +1,10 @@
 local siblingSwap = require('sibling-swap')
-local utils = require('utils')
+local harpoon = require('harpoon')
 
 local M = {}
 
 M.setup = function()
-    -- " inoremap <ESC> <NOP>
-    -- " nnoremap <C-P> :FZF<CR>
-    -- " nnoremap <silent> <C-p> :Files<CR>
-    -- " nnoremap <silent> <C-f> :Ag<Cr>
-    --
-    --=
+    -- vim.keymap.set("n", "<leader>lf", ':lua formatCode()<CR>', { noremap = true, silent = true })
 
     vim.keymap.set("t", "<ESC>", "<C-\\><C-n>", { noremap = true, silent = true })
     vim.keymap.set("t", "jk", "<C-\\><C-n>", { noremap = true, silent = true })
@@ -37,13 +32,12 @@ M.setup = function()
     vim.keymap.set("n", "<C-k>", "<C-w>k", { noremap = true, silent = true })
     vim.keymap.set("n", "<C-h>", "<C-w>h", { noremap = true, silent = true })
     vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
-    vim.keymap.set("n", "<C-S-j>", "<C-w>-", { noremap = true, silent = true })
-    vim.keymap.set("n", "<C-S-k>", "<C-w>+", { noremap = true, silent = true })
-    vim.keymap.set("n", "<C-S-h>", "<C-w><", { noremap = true, silent = true })
-    vim.keymap.set("n", "<C-S-l>", "<C-w>>", { noremap = true, silent = true })
+    vim.keymap.set("n", "<M-j>", "<C-w>-", { noremap = true, silent = true })
+    vim.keymap.set("n", "<M-k>", "<C-w>+", { noremap = true, silent = true })
+    vim.keymap.set("n", "<M-h>", "<C-w><", { noremap = true, silent = true })
+    vim.keymap.set("n", "<M-l>", "<C-w>>", { noremap = true, silent = true })
 
 
-    vim.keymap.set("n", "<leader>lf", ':lua formatCode()<CR>', { noremap = true, silent = true })
 
     vim.keymap.set("n", "<leader>ff", ':Telescope find_files<CR>', { noremap = true, silent = true })
     vim.keymap.set("n", "<leader>fg", ':Telescope live_grep<CR>', { noremap = true, silent = true })
@@ -52,12 +46,37 @@ M.setup = function()
 
     vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
+    -- tabby mappings
+    vim.api.nvim_set_keymap("n", "<leader>ta", ":$tabnew<CR>", { noremap = true })
+    vim.api.nvim_set_keymap("n", "<leader>tc", ":tabclose<CR>", { noremap = true })
+    vim.api.nvim_set_keymap("n", "<leader>to", ":tabonly<CR>", { noremap = true })
+    vim.api.nvim_set_keymap("n", "<leader>tn", ":tabn<CR>", { noremap = true })
+    vim.api.nvim_set_keymap("n", "<leader>tp", ":tabp<CR>", { noremap = true })
+    -- move current tab to previous position
+    vim.api.nvim_set_keymap("n", "<leader>tmp", ":-tabmove<CR>", { noremap = true })
+    -- move current tab to next position
+    vim.api.nvim_set_keymap("n", "<leader>tmn", ":+tabmove<CR>", { noremap = true })
+
+
+    -- Harpoon mappings
+    vim.keymap.set("n", "<C-a>", function() harpoon:list():add() end)
+    vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+
+    vim.keymap.set("n", "<C-S-h>", function() harpoon:list():select(1) end)
+    vim.keymap.set("n", "<C-S-j>", function() harpoon:list():select(2) end)
+    vim.keymap.set("n", "<C-S-k>", function() harpoon:list():select(3) end)
+    vim.keymap.set("n", "<C-S-l>", function() harpoon:list():select(4) end)
+
+    -- Toggle previous & next buffers stored within Harpoon list
+    vim.keymap.set("n", "<C-S-p>", function() harpoon:list():prev() end)
+    vim.keymap.set("n", "<C-S-n>", function() harpoon:list():next() end)
+
     siblingSwap.setup({
         keymaps = {
-            ['<M-l>'] = 'swap_with_right',
-            ['<M-h>'] = 'swap_with_left',
-            ['<space>l'] = 'swap_with_right_with_opp',
-            ['<space>h'] = 'swap_with_left_with_opp',
+            ['<space>l'] = 'swap_with_right',
+            ['<space>h'] = 'swap_with_left',
+            -- ['<space>l'] = 'swap_with_right_with_opp',
+            -- ['<space>h'] = 'swap_with_left_with_opp',
         },
     })
 
