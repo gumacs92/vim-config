@@ -104,7 +104,6 @@ vim.opt.swapfile = false
 
 -- vim.g.wildfire_objects = { "i'", "a'", 'i"', 'a"', "i)", "a)", "i]", "a]", "i}", "a}", "it", "at" }
 
--- require 'session-config.init'.setup()
 require 'neovide-config/init'.setup()
 require 'theme-config/init'.setup()
 require 'treesitter-config/init'.setup(treesitterConfig)

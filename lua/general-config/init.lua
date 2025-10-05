@@ -5,13 +5,12 @@ local commentstring = require 'ts_context_commentstring.integrations.comment_nvi
 local bufdel = require 'bufdel'
 local ufo = require 'ufo'
 local harpoon = require 'harpoon'
-require "telescope._extensions.prosession"
+local autoSession = require 'auto-session'
 
 local M = {}
 
 M.setup = function()
     vim.opt.switchbuf = "usetab,vsplit" -- Allow switching to buffers not currently open in a window
-    vim.g.prosession_dir = '~/.local/state/nvim/sessions'
 
     vim.g['loaded_netrw'] = 1
     vim.g['loaded_netrwPlugin'] = 1
@@ -74,6 +73,20 @@ M.setup = function()
     end
     -- end
 
+
+    autoSession.setup({
+        auto_restore = true,
+        auto_create = true,
+        auto_save = true,
+        bypass_session_save_file_types = { "gitcommit" },
+        cwd_change_handling = true,
+        allowed_dirs = {
+            '/home/gumacs/dev/*'
+        }
+    })
+
+
+
     -- Configuring Telescope plugin
     telescope.setup {
         defaults = {
@@ -87,29 +100,8 @@ M.setup = function()
                 "yarn.lock",
                 "package-lock.json",
             },
-            -- history = {
-            -- 	path = '~/.local/share/nvim/databases/telescope_history.sqlite3',
-            -- 	limit = 100,
-            -- }
         },
         extensions = {
-            prosession = {
-                path_display = { 'tail' },
-                layout_config = {
-                    width = 0.3,
-                    height = 0.3,
-                    -- other layout settings
-                }
-            },
-            project = {
-                base_dirs = {
-                    { '/home/gumacs/dev', max_depth = 1 }
-                },
-                -- theme = "dropdown",
-                order_by = "recent",
-                -- sync_with_nvim_tree = true, -- default false
-                display_type = "full", -- default "short"
-            },
             fzf = {
                 fuzzy = true,                   -- false will only do exact matching
                 override_generic_sorter = true, -- override the generic sorter
@@ -125,13 +117,10 @@ M.setup = function()
     -- Loading Telescope extensions
     -- telescope.load_extension('smart_history')
     telescope.load_extension('fzf')
-    telescope.load_extension('project')
-    telescope.load_extension('prosession') -- proession telescope extension is manually overriden by me
 
     -- Setting up Keybindings for lua configured plugins
     vim.api.nvim_set_keymap("n", "<leader>eo", ":NvimTreeFocus<CR>", { noremap = true })
     vim.api.nvim_set_keymap("n", "<leader>ef", ":NvimTreeFindFile<CR>", { noremap = true })
-    vim.api.nvim_set_keymap('n', '<leader>p', '<cmd>Telescope prosession<CR>', { noremap = true, silent = true })
     vim.api.nvim_set_keymap('n', '<C-p>', ":lua require'telescope.builtin'.find_files({find_command=rg})<CR>",
         { noremap = true, silent = true })
     vim.api.nvim_set_keymap('n', '<leader>ff', ":Telescope live_grep find_command=rg<CR>",

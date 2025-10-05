@@ -1,6 +1,5 @@
 local lualine = require 'lualine'
 local poimandres = require('poimandres')
-local mini_session = require('mini.sessions')
 local mini_starter = require('mini.starter')
 local oil = require("oil")
 local status_const = require "oil-vcs-status.constant.status"
@@ -172,19 +171,6 @@ M.setup = function()
      │││├┤ │ │╰┐┌╯││││
      ╯╰╯╰─╯╰─╯ ╰╯ ┴┴ ┴
     ]]
-
-    -- using the mini plugins
-    mini_session.setup({
-        -- Whether to read latest session if Neovim opened without file arguments
-        autoread = false,
-        -- Whether to write current session before quitting Neovim
-        autowrite = false,
-        -- Directory where global sessions are stored (use `''` to disable)
-        directory = '~/.local/state/nvim/sessions', --<"session" subdir of user data directory from |stdpath()|>,
-        -- File for local session (use `''` to disable)
-        file = ''                                   -- 'Session.vim',
-    })
-
 
     mini_starter.setup({
         -- evaluate_single = true,

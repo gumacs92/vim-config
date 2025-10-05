@@ -4,7 +4,7 @@ local M = {}
 M.setup = function()
     -- if vim.g.neovide then
     -- fonts must be installed inside windows
-    vim.o.guifont = 'FiraCode NF Retina:h16:w0'
+    vim.o.guifont = 'FiraCode Nerd Font Mono:h16:w0'
     vim.o.linespace = 3
 
     vim.g.neovide_padding_top = 20
@@ -23,6 +23,7 @@ M.setup = function()
     vim.g.neovide_hide_mouse_when_typing = true
 
     vim.g.neovide_no_idle = true
+    vim.g.neovide_refresh_rate = 120
     vim.g.neovide_scroll_animation_length = 0.05
     vim.g.neovide_cursor_animation_length = 0.02
 
